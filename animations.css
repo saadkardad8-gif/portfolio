@@ -1,0 +1,61 @@
+/* styles des animations (voir animations.js) */
+.intro-screen{display:none}
+.intro .intro-screen{position:fixed;inset:0;z-index:200;display:grid;place-content:center;justify-items:center;gap:18px;background:#201d84;color:#fff;cursor:pointer;
+  transition:transform .55s cubic-bezier(.7,0,.2,1);animation:intro-safety 0s 3.5s forwards}
+.intro .intro-screen.leave{transform:translateY(-100%)}
+@keyframes intro-safety{to{visibility:hidden}}
+.intro-screen strong{font-family:"Bricolage",sans-serif;font-size:72px;line-height:1;color:#ffd23f}
+.intro-screen span{display:block;width:220px;height:4px;background:rgba(255,255,255,.2);border-radius:4px;overflow:hidden}
+.intro-screen i{display:block;height:100%;background:#ffd23f;transform-origin:left;transform:scaleX(0)}
+.intro-screen b{font-weight:600;font-variant-numeric:tabular-nums}
+.intro .hero h1 span,.intro .hero .role,.intro .hero .pitch,.intro .hero .actions,.intro .portrait,.intro .facts li{animation-play-state:paused}
+
+.js .hero h1 span{animation:none}
+.letter{display:inline-block;font-style:normal;transition:color .2s,transform .2s}
+.js .hero h1 .letter{opacity:0}
+.js .hero h1.play .letter{animation:letter-drop .8s cubic-bezier(.2,1.5,.4,1) forwards;animation-delay:calc(var(--n) * 70ms)}
+@keyframes letter-drop{from{opacity:0;transform:translateY(-70px) rotateX(-90deg)}to{opacity:1;transform:none}}
+.hero h1 .letter:hover{color:var(--yellow)}
+@media (prefers-reduced-motion:reduce){.js .hero h1 .letter{opacity:1}}
+
+.typed{min-height:1.7em;margin-top:6px;font-family:"Bricolage",sans-serif;font-size:clamp(19px,2.2vw,25px);font-weight:600;color:var(--yellow)}
+.typed i{display:inline-block;width:3px;height:1em;margin-left:4px;vertical-align:-.12em;background:currentColor;animation:blink .9s steps(2,start) infinite}
+@keyframes blink{50%{opacity:0}}
+
+.particles{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+
+.marquee{overflow:hidden;background:var(--blue-deep);color:#fff;padding:20px 0}
+.track{display:flex;width:max-content;will-change:transform}
+.track span{font-family:"Bricolage",sans-serif;font-size:clamp(22px,3vw,34px);font-weight:700;white-space:nowrap;padding-right:56px}
+.track span:nth-child(even){color:var(--yellow)}
+
+.timeline{position:relative}
+.timeline > li.tl-fill{position:absolute;left:6px;top:29px;width:3px;height:0;padding:0;display:block;background:var(--blue);border-radius:3px}
+.timeline > li.tl-fill::before,.timeline > li.tl-fill::after{display:none}
+.timeline > li:nth-last-child(2)::after{display:none}
+.timeline > li:nth-last-child(2){padding-bottom:0}
+.timeline > li::before{transition:background .3s,transform .3s,box-shadow .3s}
+.timeline > li.reached::before{background:var(--blue);transform:scale(1.2);box-shadow:0 0 0 6px color-mix(in srgb,var(--blue) 20%,transparent)}
+
+.term{margin-top:28px;border-radius:12px;overflow:hidden;background:#14162b;color:#e8e9f6;text-align:left}
+.term-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#23264a}
+.term-bar b{width:11px;height:11px;border-radius:50%;background:#ff5f57}
+.term-bar b:nth-child(2){background:#febc2e}
+.term-bar b:nth-child(3){background:#28c840}
+.term-bar em{margin-left:8px;font-style:normal;font-size:13px;color:#aeb2d6}
+.term pre{padding:18px 20px;font:14.5px/1.7 ui-monospace,Consolas,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
+.term .k{color:#ff7aa8}
+.term .s{color:#ffd23f}
+.caret{display:inline-block;width:8px;height:1.1em;vertical-align:-.2em;background:#ffd23f;animation:blink .9s steps(2,start) infinite}
+
+.spark{position:fixed;width:8px;height:8px;border-radius:50%;background:var(--yellow);box-shadow:0 0 0 1px var(--blue);pointer-events:none;z-index:120}
+
+.to-top{position:fixed;right:20px;bottom:20px;z-index:40;width:52px;height:52px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;
+  background:conic-gradient(var(--yellow) var(--p,0%),rgba(20,22,43,.25) 0);box-shadow:0 10px 24px rgba(0,0,0,.3);
+  opacity:0;visibility:hidden;transform:translateY(20px);transition:opacity .3s,transform .3s,visibility .3s}
+.to-top::before{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--blue)}
+.to-top svg{position:relative;width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.to-top.show{opacity:1;visibility:visible;transform:none}
+@media (max-width:640px){.to-top{right:12px;bottom:12px;width:46px;height:46px}footer{padding-bottom:72px}}
+
+@media print{.particles,.marquee,.term,.to-top,.intro-screen,.spark{display:none!important}}

@@ -316,8 +316,11 @@ nav a:hover{transform:perspective(300px) rotateX(24deg) translateY(-3px)}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
 @media print{.cube-rail,.contact::before{display:none}.orbit,.hero::before{display:none}.js .reveal{opacity:1;transform:none}.cur-dot,.cur-ring{display:none}header{position:static}.actions{display:none}}
 </style>
+<link rel="stylesheet" href="animations.css">
+<script>try{if(!sessionStorage.getItem("intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro")}catch(e){}</script>
 </head>
 <body>
+<div class="intro-screen" aria-hidden="true"><strong>&lt;/&gt;</strong><span><i></i></span><b>0 %</b></div>
 <a class="skip" href="#contenu">Aller au contenu</a>
 
 <header>
@@ -765,7 +768,7 @@ nav a:hover{transform:perspective(300px) rotateX(24deg) translateY(-3px)}
 
   function paint(target) {
     if (!(target instanceof Element)) return;
-    const dark = target.closest("header, .hero, .facts, .contact, footer, .project.main");
+    const dark = target.closest("header, .hero, .facts, .contact, footer, .project.main, .marquee, .term");
     const link = target.closest("a, button");
     const onYellow = target.closest(".btn-yellow, .btn-line, .card-btn.flipped, .wanted");
     for (const el of [ring, dot]) {
@@ -791,5 +794,6 @@ nav a:hover{transform:perspective(300px) rotateX(24deg) translateY(-3px)}
   })();
 })();
 </script>
+<script src="animations.js"></script>
 </body>
 </html>
