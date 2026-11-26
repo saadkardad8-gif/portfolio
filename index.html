@@ -157,7 +157,24 @@ nav a.active{opacity:1;text-decoration:underline;text-decoration-color:var(--yel
 .has-cursor .cur-dot,.has-cursor .cur-ring{opacity:1}
 .has-cursor,.has-cursor *{cursor:none!important}
 
+/* carte de visite */
+.contact-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,520px);gap:clamp(32px,5vw,72px);align-items:center}
+.contact .mail{font-size:clamp(21px,2.5vw,32px)}
+.contact h2{font-size:clamp(40px,5vw,64px)}
+.card-zone{display:flex;flex-direction:column;align-items:center;gap:14px}
+.card-btn{width:100%;padding:0;border:0;background:none;cursor:pointer;perspective:1200px}
+.card-inner{display:grid}
+.face{width:100%;height:auto;border-radius:14px;box-shadow:0 22px 44px rgba(0,0,0,.35)}
+.js .card-inner{transform-style:preserve-3d;transition:transform .7s cubic-bezier(.22,1,.36,1)}
+.js .face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.js .verso{transform:rotateY(180deg)}
+.js .card-btn.flipped .card-inner{transform:rotateY(180deg)}
+.card-hint{margin:0;font-size:14.5px}
+html:not(.js) .card-hint{display:none}
+.contact .card-hint{margin:0}
+
 @media (max-width:920px){
+  .contact-grid{grid-template-columns:1fr}
   nav{display:none}
   .hero .wrap{grid-template-columns:1fr}
   .portrait{order:-1;justify-self:start;max-width:230px}
@@ -323,7 +340,8 @@ nav a.active{opacity:1;text-decoration:underline;text-decoration-color:var(--yel
 </section>
 
 <section class="contact" id="contact">
-  <div class="wrap">
+  <div class="wrap contact-grid">
+    <div>
     <h2>Travaillons ensemble</h2>
     <p>Disponible pour des projets. Une idée, une opportunité ou une question : écrivez-moi.</p>
     <a class="mail" href="mailto:saadkardad8@gmail.com">saadkardad8@gmail.com</a>
@@ -334,6 +352,17 @@ nav a.active{opacity:1;text-decoration:underline;text-decoration-color:var(--yel
     </ul>
     <div class="actions">
       <a class="btn btn-yellow" href="SaadkardadCv.pdf" download="CV_Saad_Kardad.pdf">Télécharger le CV</a>
+    </div>
+    </div>
+    <div class="card-zone">
+      <button class="card-btn" type="button" aria-pressed="false" aria-label="Retourner la carte de visite">
+        <span class="card-inner">
+          <img class="face recto" src="carte-recto.jpg" width="1360" height="880" alt="Recto de la carte de visite : Saad Kardad, développeur web full stack junior, stagiaire chez Wafa Assurance">
+          <img class="face verso" src="carte-verso.png" width="1360" height="880" alt="Verso de la carte de visite : téléphone, e-mail, GitHub, Marrakech et QR code pour ajouter le contact">
+        </span>
+      </button>
+      <p class="card-hint">Cliquez sur la carte pour la retourner</p>
+      <a class="btn btn-line" href="carte-visite-saad-kardad.pdf" download>Télécharger la carte (PDF)</a>
     </div>
   </div>
 </section>
@@ -392,6 +421,10 @@ nav a.active{opacity:1;text-decoration:underline;text-decoration-color:var(--yel
     blocks.forEach(el => { el.classList.add("reveal"); io.observe(el); });
   }
 
+  // carte de visite : recto / verso
+  const card = document.querySelector(".card-btn");
+  card.addEventListener("click", () => card.setAttribute("aria-pressed", card.classList.toggle("flipped")));
+
   // curseur personnalisé : souris uniquement
   if (calm || !matchMedia("(hover: hover) and (pointer: fine)").matches) return;
   let x = 0, y = 0, rx = 0, ry = 0, started = false;
@@ -400,7 +433,7 @@ nav a.active{opacity:1;text-decoration:underline;text-decoration-color:var(--yel
     if (!(target instanceof Element)) return;
     const dark = target.closest("header, .hero, .facts, .contact, footer, .project.main");
     const link = target.closest("a, button");
-    const onYellow = target.closest(".btn-yellow, .btn-line");
+    const onYellow = target.closest(".btn-yellow, .btn-line, .card-btn.flipped");
     for (const el of [ring, dot]) {
       el.classList.toggle("on-dark", !!dark);
       el.classList.toggle("on-link", !!link);
