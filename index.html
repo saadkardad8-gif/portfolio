@@ -173,7 +173,31 @@ nav a.active{opacity:1;text-decoration:underline;text-decoration-color:var(--yel
 html:not(.js) .card-hint{display:none}
 .contact .card-hint{margin:0}
 
+/* ce que je recherche */
+.wanted{background:var(--yellow);color:var(--ink);padding:36px 0}
+.wanted .wrap{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr) auto;gap:24px clamp(24px,4vw,56px);align-items:center}
+.wanted h2{font-size:clamp(26px,2.8vw,32px);font-weight:750}
+.wanted dl{display:grid;grid-template-columns:1.4fr 1.1fr .7fr;gap:20px}
+.wanted dt{font-size:14.5px}
+.wanted dd{font-weight:700;line-height:1.35}
+.wanted-btn{background:var(--ink);color:#fff}
+.wanted-btn:hover{background:#fff;color:var(--ink)}
+
+/* frise du parcours */
+.timeline li{position:relative;border-top:0;padding:0 0 40px 34px;grid-template-columns:130px minmax(0,1fr)}
+.timeline li:first-child{padding-top:0}
+.timeline > li::before{content:"";position:absolute;left:0;top:7px;width:15px;height:15px;border-radius:50%;background:var(--mist);border:3px solid var(--blue);z-index:1}
+.timeline > li::after{content:"";position:absolute;left:6.5px;top:22px;bottom:-7px;width:2px;background:var(--blue);opacity:.3}
+.timeline > li:last-child{padding-bottom:0}
+.timeline > li:last-child::after{display:none}
+.timeline > li.now::before{background:var(--blue);box-shadow:0 0 0 5px color-mix(in srgb,var(--blue) 22%,transparent)}
+ul.points li{position:static}
+.lang-btn{font-family:inherit;background:none;cursor:pointer;min-width:48px}
+
 @media (max-width:920px){
+  .wanted .wrap{grid-template-columns:1fr}
+  .wanted-btn{justify-self:start}
+
   .contact-grid{grid-template-columns:1fr}
   nav{display:none}
   .hero .wrap{grid-template-columns:1fr}
@@ -182,6 +206,11 @@ html:not(.js) .card-hint{display:none}
   .facts ul{grid-template-columns:1fr 1fr}
 }
 @media (max-width:640px){
+  .bar{gap:10px}
+  .brand{font-size:18px}
+  .btn-small{padding:7px 10px;font-size:13.5px}
+  .lang-btn{min-width:40px}
+  .wanted dl{grid-template-columns:1fr;gap:12px}
   .timeline li,dl.skills>div{grid-template-columns:1fr;gap:8px}
   .pair{grid-template-columns:1fr}
   .actions .btn{width:100%}
@@ -203,6 +232,7 @@ html:not(.js) .card-hint{display:none}
       <a href="#competences">Compétences</a>
       <a href="#contact">Contact</a>
     </nav>
+    <button class="btn btn-line btn-small lang-btn" type="button" lang="en" aria-label="Switch to English">EN</button>
     <a class="btn btn-yellow btn-small" href="SaadkardadCv.pdf" download="CV_Saad_Kardad.pdf">Télécharger le CV</a>
   </div>
   <div class="progress" aria-hidden="true"></div>
@@ -239,6 +269,18 @@ html:not(.js) .card-hint{display:none}
   </ul>
 </div>
 
+<section class="wanted" id="recherche">
+  <div class="wrap">
+    <h2>Ce que je recherche</h2>
+    <dl>
+      <div><dt>Contrat</dt><dd>CDI, CDD, stage ou freelance</dd></div>
+      <div><dt>Disponibilité</dt><dd>Après mon stage actuel</dd></div>
+      <div><dt>Lieu</dt><dd>Marrakech</dd></div>
+    </dl>
+    <a class="btn wanted-btn" href="#contact">Me contacter</a>
+  </div>
+</section>
+
 <section class="block" id="profil">
   <div class="wrap split">
     <h2>Profil</h2>
@@ -251,14 +293,27 @@ html:not(.js) .card-hint{display:none}
 
 <section class="block tint" id="parcours">
   <div class="wrap split">
-    <h2>Parcours</h2>
-    <div>
-      <ol class="timeline">
+    <h2>Mon parcours</h2>
+    <ol class="timeline">
         <li>
+          <p class="when">2023</p>
+          <div><h3>Baccalauréat sciences physiques</h3><p class="where">Lycée Zerktouni, Marrakech</p></div>
+        </li>
+        <li>
+          <p class="when">2023</p>
+          <div><h3>Études en sciences de l'ingénieur</h3><p class="where">École Marocaine des Sciences de l'Ingénieur (EMSI), Marrakech</p></div>
+        </li>
+        <li>
+          <p class="when">2024 à 2026</p>
+          <div><h3>Technicien spécialisé en développement informatique</h3><p class="where">Institut Excel, Marrakech</p></div>
+        </li>
+        <li>
+          <p class="when">Juillet 2026</p>
+          <div><h3>Projet de fin d'études : location de voitures</h3><p class="where">Application web soutenue devant le jury</p></div>
+        </li>
+        <li class="now">
           <p class="when">Depuis septembre 2026</p>
-          <div>
-            <h3>Développeur web junior (stage)</h3>
-            <p class="where">Wafa Assurance, agence Ahl Al Khair, Marrakech</p>
+          <div><h3>Développeur web junior (stage)</h3><p class="where">Wafa Assurance, agence Ahl Al Khair, Marrakech</p>
             <ul class="points">
               <li>Conception et développement du site web de l'agence : interface moderne, responsive et adaptée au mobile.</li>
               <li>Développement d'une application de gestion des paiements clients (virement, chèque, espèces, carte bancaire).</li>
@@ -267,23 +322,7 @@ html:not(.js) .card-hint{display:none}
             </ul>
           </div>
         </li>
-      </ol>
-      <h3 class="sub">Formation</h3>
-      <ol class="timeline">
-        <li>
-          <p class="when">2024 à 2026</p>
-          <div><h3>Technicien spécialisé en développement informatique</h3><p class="where">Institut Excel, Marrakech</p></div>
-        </li>
-        <li>
-          <p class="when">2023</p>
-          <div><h3>Études en sciences de l'ingénieur</h3><p class="where">École Marocaine des Sciences de l'Ingénieur (EMSI), Marrakech</p></div>
-        </li>
-        <li>
-          <p class="when">2023</p>
-          <div><h3>Baccalauréat sciences physiques</h3><p class="where">Lycée Zerktouni, Marrakech</p></div>
-        </li>
-      </ol>
-    </div>
+    </ol>
   </div>
 </section>
 
@@ -343,7 +382,7 @@ html:not(.js) .card-hint{display:none}
   <div class="wrap contact-grid">
     <div>
     <h2>Travaillons ensemble</h2>
-    <p>Disponible pour des projets. Une idée, une opportunité ou une question : écrivez-moi.</p>
+    <p>Disponible après mon stage, à Marrakech. Une idée, une opportunité ou une question : écrivez-moi.</p>
     <a class="mail" href="mailto:saadkardad8@gmail.com">saadkardad8@gmail.com</a>
     <ul class="coords">
       <li><a href="tel:+212615307782">+212 6 15 30 77 82</a></li>
@@ -414,7 +453,7 @@ html:not(.js) .card-hint{display:none}
 
   // apparition des blocs au défilement
   if (!calm && "IntersectionObserver" in window) {
-    const blocks = document.querySelectorAll(".split > h2, .lead, .text, .timeline > li, .sub, .project, .skills > div, .contact h2, .mail");
+    const blocks = document.querySelectorAll(".split > h2, .lead, .text, .timeline > li, .sub, .project, .skills > div, .contact h2, .mail, .wanted dl > div");
     const io = new IntersectionObserver(entries => entries.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
     }), { threshold: 0.1 });
@@ -425,6 +464,118 @@ html:not(.js) .card-hint{display:none}
   const card = document.querySelector(".card-btn");
   card.addEventListener("click", () => card.setAttribute("aria-pressed", card.classList.toggle("flipped")));
 
+  // version française / anglaise
+  const en = {
+ "Aller au contenu": "Skip to content",
+ "Profil": "Profile",
+ "Parcours": "Journey",
+ "Projets": "Projects",
+ "Compétences": "Skills",
+ "Télécharger le CV": "Download CV",
+ "Voir mes projets": "See my projects",
+ "Me contacter": "Contact me",
+ "Développeur web full stack junior à Marrakech": "Junior full stack web developer in Marrakech",
+ "Je conçois des interfaces web modernes et responsives avec les applications qui les font vivre, du front-end à la base de données.": "I build modern, responsive web interfaces and the applications behind them, from front end to database.",
+ "22 ans": "22 years old",
+ "Âge": "Age",
+ "Maroc": "Morocco",
+ "Stage en cours depuis septembre 2026": "Internship since September 2026",
+ "3 langues": "3 languages",
+ "Arabe, français, anglais": "Arabic, French, English",
+ "Ce que je recherche": "What I'm looking for",
+ "Contrat": "Contract",
+ "CDI, CDD, stage ou freelance": "Permanent, fixed-term, internship or freelance",
+ "Disponibilité": "Availability",
+ "Après mon stage actuel": "After my current internship",
+ "Lieu": "Location",
+ "Technicien spécialisé en développement informatique, passionné par la conception d'applications web modernes, dynamiques et responsives.": "Specialised technician in software development, passionate about building modern, dynamic and responsive web applications.",
+ "Je maîtrise la chaîne complète : interface front-end (React.js, Tailwind CSS), back-end (Node.js, API REST) et bases de données (MySQL, MongoDB). Rigoureux et curieux, je transforme un besoin concret en solution fonctionnelle et je recherche une opportunité pour contribuer à des projets innovants au sein d'une équipe.": "I work across the whole stack: front end (React.js, Tailwind CSS), back end (Node.js, REST APIs) and databases (MySQL, MongoDB). Thorough and curious, I turn a real need into a working solution, and I'm looking for an opportunity to contribute to innovative projects within a team.",
+ "Mon parcours": "My journey",
+ "Baccalauréat sciences physiques": "Baccalaureate in physical sciences",
+ "Lycée Zerktouni, Marrakech": "Zerktouni High School, Marrakech",
+ "Études en sciences de l'ingénieur": "Engineering sciences studies",
+ "École Marocaine des Sciences de l'Ingénieur (EMSI), Marrakech": "Moroccan School of Engineering Sciences (EMSI), Marrakech",
+ "2024 à 2026": "2024 to 2026",
+ "Technicien spécialisé en développement informatique": "Specialised technician in software development",
+ "Institut Excel, Marrakech": "Excel Institute, Marrakech",
+ "Juillet 2026": "July 2026",
+ "Projet de fin d'études : location de voitures": "Final-year project: car rental",
+ "Application web soutenue devant le jury": "Web application presented to a jury",
+ "Depuis septembre 2026": "Since September 2026",
+ "Développeur web junior (stage)": "Junior web developer (internship)",
+ "Wafa Assurance, agence Ahl Al Khair, Marrakech": "Wafa Assurance, Ahl Al Khair agency, Marrakech",
+ "Conception et développement du site web de l'agence : interface moderne, responsive et adaptée au mobile.": "Designed and developed the agency's website: a modern, responsive, mobile-friendly interface.",
+ "Développement d'une application de gestion des paiements clients (virement, chèque, espèces, carte bancaire).": "Developed a client payment management application (bank transfer, cheque, cash, card).",
+ "Enregistrement et suivi des paiements pour faciliter la gestion quotidienne de l'agence.": "Payment recording and tracking to make the agency's daily work easier.",
+ "Analyse des besoins en collaboration avec l'équipe de l'agence.": "Requirements analysis together with the agency team.",
+ "Projet de fin d'études, juillet 2026": "Final-year project, July 2026",
+ "Application de location de voitures": "Car rental application",
+ "Application complète de gestion de location de véhicules.": "A complete vehicle rental management application.",
+ "API back-end Node.js pour les véhicules, les utilisateurs et les réservations.": "Node.js back-end API for vehicles, users and bookings.",
+ "Interface responsive avec React.js et Tailwind CSS.": "Responsive interface with React.js and Tailwind CSS.",
+ "Modélisation UML et soutenance devant le jury.": "UML modelling and presentation to a jury.",
+ "Mini-projet, mars 2024": "Mini project, March 2024",
+ "Gestion et suivi des stocks": "Stock management and tracking",
+ "Entrées et sorties de produits avec mise à jour automatique des quantités, recherche d'articles et génération de rapports.": "Product entries and exits with automatic quantity updates, item search and report generation.",
+ "Projet entrepreneurial, 2024, en cours": "Entrepreneurial project, 2024, ongoing",
+ "Marque streetwear": "Streetwear brand",
+ "Marque de vêtements moderne et minimaliste : étude de marché, identité visuelle, cahier des charges, maquettes et stratégie de marque.": "A modern, minimalist clothing brand: market research, visual identity, specifications, mock-ups and brand strategy.",
+ "Stratégie": "Strategy",
+ "Bases de données": "Databases",
+ "Langages": "Languages",
+ "Outils et déploiement": "Tools and deployment",
+ "Conception et IA": "Design and AI",
+ "UML, développement assisté par IA (Claude Code)": "UML, AI-assisted development (Claude Code)",
+ "Langues": "Spoken languages",
+ "Arabe (langue maternelle), français (courant), anglais (intermédiaire)": "Arabic (native), French (fluent), English (intermediate)",
+ "Qualités": "Strengths",
+ "Résolution de problèmes, travail en équipe, gestion du temps, adaptabilité, leadership": "Problem solving, teamwork, time management, adaptability, leadership",
+ "Centres d'intérêt": "Interests",
+ "Photographie, voyage, musique, aventure": "Photography, travel, music, adventure",
+ "Travaillons ensemble": "Let's work together",
+ "Disponible après mon stage, à Marrakech. Une idée, une opportunité ou une question : écrivez-moi.": "Available after my internship, in Marrakech. An idea, an opportunity or a question: write to me.",
+ "Marrakech, Maroc": "Marrakech, Morocco",
+ "Cliquez sur la carte pour la retourner": "Click the card to flip it",
+ "Télécharger la carte (PDF)": "Download the card (PDF)",
+ "© 2026 Saad Kardad. Conçu et développé à Marrakech.": "© 2026 Saad Kardad. Designed and built in Marrakech.",
+ "Sections": "Sections",
+ "Technologies": "Technologies",
+ "Domaines": "Areas",
+ "Portrait de Saad Kardad": "Portrait of Saad Kardad",
+ "Retourner la carte de visite": "Flip the business card",
+ "Recto de la carte de visite : Saad Kardad, développeur web full stack junior, stagiaire chez Wafa Assurance": "Front of the business card: Saad Kardad, junior full stack web developer, intern at Wafa Assurance",
+ "Verso de la carte de visite : téléphone, e-mail, GitHub, Marrakech et QR code pour ajouter le contact": "Back of the business card: phone, email, GitHub, Marrakech and a QR code to add the contact",
+ "Saad Kardad, développeur web full stack à Marrakech": "Saad Kardad, full stack web developer in Marrakech"
+};
+  const texts = [], attrs = [];
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for (let n; (n = walker.nextNode());) {
+    const key = n.nodeValue.replace(/\s+/g, " ").trim();
+    if (en[key] && !n.parentElement.closest("script, style")) texts.push([n, n.nodeValue, en[key]]);
+  }
+  document.querySelectorAll("[alt], [aria-label]:not(.lang-btn)").forEach(el => ["alt", "aria-label"].forEach(a => {
+    const v = el.getAttribute(a);
+    if (en[v]) attrs.push([el, a, v, en[v]]);
+  }));
+  const langBtn = document.querySelector(".lang-btn");
+  const frTitle = document.title;
+
+  function setLang(lang) {
+    const isEn = lang === "en";
+    texts.forEach(([n, fr, tr]) => n.nodeValue = isEn ? fr.replace(fr.trim(), () => tr) : fr);
+    attrs.forEach(([el, a, fr, tr]) => el.setAttribute(a, isEn ? tr : fr));
+    root.lang = lang;
+    document.title = isEn ? en[frTitle] : frTitle;
+    langBtn.textContent = isEn ? "FR" : "EN";
+    langBtn.lang = isEn ? "fr" : "en";
+    langBtn.setAttribute("aria-label", isEn ? "Passer en français" : "Switch to English");
+    try { localStorage.setItem("lang", lang); } catch {}
+  }
+  langBtn.addEventListener("click", () => setLang(root.lang === "en" ? "fr" : "en"));
+  let saved = new URLSearchParams(location.search).get("lang");
+  try { saved = saved || localStorage.getItem("lang"); } catch {}
+  if (saved === "en") setLang("en");
+
   // curseur personnalisé : souris uniquement
   if (calm || !matchMedia("(hover: hover) and (pointer: fine)").matches) return;
   let x = 0, y = 0, rx = 0, ry = 0, started = false;
@@ -433,7 +584,7 @@ html:not(.js) .card-hint{display:none}
     if (!(target instanceof Element)) return;
     const dark = target.closest("header, .hero, .facts, .contact, footer, .project.main");
     const link = target.closest("a, button");
-    const onYellow = target.closest(".btn-yellow, .btn-line, .card-btn.flipped");
+    const onYellow = target.closest(".btn-yellow, .btn-line, .card-btn.flipped, .wanted");
     for (const el of [ring, dot]) {
       el.classList.toggle("on-dark", !!dark);
       el.classList.toggle("on-link", !!link);
