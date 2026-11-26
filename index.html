@@ -228,6 +228,65 @@ ul.points li{position:static}
 .js .reveal{transform:perspective(900px) translateY(40px) rotateX(-22deg);transform-origin:50% 100%}
 .js .reveal.in{transform:none}
 
+/* tout le portfolio en 3D */
+:root{--edge:color-mix(in srgb,var(--blue) 34%,#fff)}
+.facts li,.wanted dl>div,#profil .split>div:not(.cube-rail),.timeline>li>div,.project,dl.skills>div{border-radius:12px;transition:transform .5s,box-shadow .35s}
+#profil .split>div:not(.cube-rail),.timeline>li>div,dl.skills>div,.wanted dl>div,.project{
+  box-shadow:1px 1px 0 var(--edge),2px 2px 0 var(--edge),3px 3px 0 var(--edge),4px 4px 0 var(--edge),5px 5px 0 var(--edge),6px 6px 0 var(--edge),7px 7px 0 var(--edge),16px 20px 30px rgba(20,22,43,.14)}
+#profil .split>div:not(.cube-rail){background:#fff;border:1px solid var(--line);padding:clamp(22px,3.5vw,38px)}
+.timeline>li>div{background:#fff;border:1px solid var(--line);padding:18px 22px}
+.timeline>li{padding-bottom:32px}
+.timeline .when{padding-top:19px}
+.timeline>li::before{top:22px}
+.timeline>li:first-child{padding-top:0}
+.timeline>li::after{top:37px;bottom:-22px}
+dl.skills>div,dl.skills>div:first-child{background:#fff;border:1px solid var(--line);padding:16px 22px;margin-bottom:18px}
+.project.main{box-shadow:1px 1px 0 var(--blue-deep),2px 2px 0 var(--blue-deep),3px 3px 0 var(--blue-deep),4px 4px 0 var(--blue-deep),5px 5px 0 var(--blue-deep),6px 6px 0 var(--blue-deep),7px 7px 0 var(--blue-deep),8px 8px 0 var(--blue-deep),18px 24px 36px rgba(20,22,43,.28)}
+.js .project.reveal.in:hover,.project:hover{box-shadow:5px 5px 0 var(--edge),10px 10px 0 var(--edge),24px 30px 44px rgba(20,22,43,.2)}
+.wanted dl>div{background:#fff;padding:12px 16px;--edge:#c79a14}
+.facts li{background:var(--blue);padding:14px 18px;box-shadow:0 6px 0 rgba(0,0,0,.35),0 16px 24px rgba(0,0,0,.25)}
+.js .facts li{animation:flip-in .9s cubic-bezier(.22,1,.36,1) backwards}
+.js .facts li:nth-child(2){animation-delay:.12s}
+.js .facts li:nth-child(3){animation-delay:.24s}
+.js .facts li:nth-child(4){animation-delay:.36s}
+@keyframes flip-in{from{opacity:0;transform:perspective(700px) rotateX(-85deg)}}
+.js .tilting{transition:transform .08s linear,box-shadow .3s!important}
+
+.split>h2,.wanted h2{text-shadow:1px 1px 0 var(--edge),2px 2px 0 var(--edge),3px 3px 0 var(--edge),4px 4px 0 var(--edge),5px 5px 0 var(--edge),9px 11px 16px rgba(20,22,43,.18)}
+.wanted h2{--edge:#c79a14}
+
+.btn{box-shadow:0 5px 0 rgba(0,0,0,.25);transition:background .2s,color .2s,transform .12s,box-shadow .12s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 7px 0 rgba(0,0,0,.25)}
+.btn:active,.hero .btn-yellow:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
+nav a{display:inline-block;transition:transform .3s,opacity .2s}
+nav a:hover{transform:perspective(300px) rotateX(24deg) translateY(-3px)}
+
+/* cubes sous les titres de section */
+.split{position:relative}
+.cube-rail{position:absolute;left:calc(var(--pad) + 36px);top:170px;bottom:20px;width:96px;pointer-events:none}
+.cube-view{position:sticky;top:260px;width:96px;height:96px;perspective:500px}
+.cube{position:relative;width:100%;height:100%;transform-style:preserve-3d;transform:rotateX(calc(-22deg + var(--spin,0deg) * .5)) rotateY(calc(34deg + var(--spin,0deg)))}
+.cube span{position:absolute;inset:0;display:grid;place-items:center;font-family:"Bricolage",sans-serif;font-size:24px;font-weight:700;color:#fff;
+  background:color-mix(in srgb,var(--blue) 88%,transparent);border:2px solid var(--yellow);border-radius:8px}
+.cube span:nth-child(1){transform:translateZ(48px)}
+.cube span:nth-child(2){transform:rotateY(180deg) translateZ(48px)}
+.cube span:nth-child(3){transform:rotateY(90deg) translateZ(48px)}
+.cube span:nth-child(4){transform:rotateY(-90deg) translateZ(48px)}
+.cube span:nth-child(5){transform:rotateX(90deg) translateZ(48px)}
+.cube span:nth-child(6){transform:rotateX(-90deg) translateZ(48px)}
+
+.contact{position:relative;isolation:isolate;overflow:hidden}
+.contact::before{content:"";position:absolute;z-index:-1;left:-50%;right:-50%;bottom:0;height:55%;
+  background:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0 1px,transparent 1px 72px),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.16) 0 1px,transparent 1px 72px);
+  transform:perspective(520px) rotateX(62deg);transform-origin:bottom;
+  -webkit-mask:linear-gradient(transparent,#000 75%);mask:linear-gradient(transparent,#000 75%);
+  animation:floor 3.5s linear infinite}
+
+@media (max-width:920px){
+  .cube-rail{display:none}
+}
 @media (max-width:920px){
   .portrait{justify-self:center!important}
   .orbit li{font-size:12px;padding:5px 9px}
@@ -253,7 +312,7 @@ ul.points li{position:static}
   .actions .btn{width:100%}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
-@media print{.orbit,.hero::before{display:none}.js .reveal{opacity:1;transform:none}.cur-dot,.cur-ring{display:none}header{position:static}.actions{display:none}}
+@media print{.cube-rail,.contact::before{display:none}.orbit,.hero::before{display:none}.js .reveal{opacity:1;transform:none}.cur-dot,.cur-ring{display:none}header{position:static}.actions{display:none}}
 </style>
 </head>
 <body>
@@ -553,12 +612,12 @@ ul.points li{position:static}
       portrait.style.removeProperty("--px");
       portrait.style.removeProperty("--py");
     });
-    document.querySelectorAll(".project, .card-btn").forEach(el => {
+    document.querySelectorAll(".project, .card-btn, .facts li, .wanted dl > div, #profil .split > div, .timeline > li > div, .skills > div").forEach(el => {
       el.addEventListener("pointermove", e => {
         const r = el.getBoundingClientRect();
         const dx = (e.clientX - r.left) / r.width - 0.5;
         const dy = (e.clientY - r.top) / r.height - 0.5;
-        const force = r.width > 600 ? 7 : 12;
+        const force = r.width > 600 ? 5 : 11;
         el.classList.add("tilting");
         el.style.transform = `perspective(1000px) rotateY(${dx * force}deg) rotateX(${-dy * force}deg) translateY(-4px)`;
         el.style.setProperty("--gx", `${(dx + 0.5) * 100}%`);
@@ -567,6 +626,24 @@ ul.points li{position:static}
       el.addEventListener("pointerleave", () => { el.classList.remove("tilting"); el.style.transform = ""; });
     });
   }
+
+  // cubes 3D qui tournent avec le défilement
+  const cubes = [...document.querySelectorAll("section .split")].map(split => {
+    const rail = document.createElement("div");
+    rail.className = "cube-rail";
+    rail.setAttribute("aria-hidden", "true");
+    rail.innerHTML = '<div class="cube-view"><div class="cube">' +
+      ["&lt;/&gt;", "{ }", "JS", "SQL", "API", "UML"].map(t => `<span>${t}</span>`).join("") + "</div></div>";
+    split.appendChild(rail);
+    return rail.querySelector(".cube");
+  });
+  let turn = 0;
+  function rotateCubes() {
+    turn += 0.25;
+    cubes.forEach((c, i) => c.style.setProperty("--spin", `${turn + scrollY * 0.25 + i * 50}deg`));
+    requestAnimationFrame(rotateCubes);
+  }
+  if (!calm) rotateCubes();
 
   // version française / anglaise
   const en = {
