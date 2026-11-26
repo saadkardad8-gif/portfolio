@@ -247,6 +247,44 @@ nav a:hover,nav a.active{color:#fff;background-size:100% 2px}
 html:not(.js) .card-hint,html:not(.js) .run{display:none}
 footer{background:var(--deep);color:var(--pale);font-size:14px;padding:22px 0;border-top:1px solid #6e96cc}
 
+/* résumé pour les recruteurs */
+.head-recap{display:none}
+@media (min-width:1080px){.head-recap{display:inline-flex}}
+.recap{margin:auto;width:min(600px,calc(100vw - 24px));max-height:calc(100svh - 24px);overflow:auto;border:0;border-radius:8px;padding:28px;background:var(--paper);color:var(--ink);border-top:8px solid var(--blue)}
+.recap::backdrop{background:rgba(4,24,52,.75)}
+.recap[open]{animation:recap-in .45s cubic-bezier(.22,1,.36,1)}
+@keyframes recap-in{from{opacity:0;transform:translateY(30px) scale(.96)}}
+.recap-close{position:absolute;right:10px;top:8px;width:40px;height:40px;border:0;background:none;font-size:30px;line-height:1;color:var(--ink);cursor:pointer}
+.recap-head{display:flex;gap:18px;align-items:center;padding-right:30px}
+.recap-head img{width:84px;height:104px;object-fit:cover;object-position:50% 30%;border:2px solid var(--blue);background:#fff}
+.recap h2{font-size:34px}
+.recap-head p{font-weight:600;line-height:1.35}
+.recap dl{display:grid;grid-template-columns:1.4fr 1.2fr .8fr;gap:8px;margin-top:18px}
+.recap dl>div{background:#fff;border:1.5px solid var(--blue);border-radius:4px;padding:8px 12px}
+.recap dt{font-size:13px;color:var(--blue)}
+.recap dd{font-weight:600;font-size:15px;line-height:1.35}
+.recap ul{margin-top:16px;font-size:15.5px;line-height:1.5}
+.recap li{position:relative;padding:0 0 7px 18px}
+.recap li::before{content:"";position:absolute;left:0;top:.7em;width:9px;height:2px;background:var(--blue)}
+.recap-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.recap-actions .btn{flex:1 1 150px;padding:11px 14px;font-size:15px}
+.recap-coords{display:flex;flex-wrap:wrap;gap:4px 22px;margin-top:14px;font-size:15px;font-weight:600}
+.copied{font-size:14px;min-height:1.5em;margin-top:8px}
+.contact .copied{margin-top:10px;color:var(--cyan)}
+body:has(.recap[open]){overflow:hidden}
+
+/* compétences reliées aux projets */
+.skills-hint{margin-bottom:18px;color:var(--pale)}
+html:not(.js) .skills-hint,html:not(.js) .open-recap,html:not(.js) .copy-mail{display:none}
+button.chip{font-family:inherit;line-height:inherit;cursor:pointer}
+.chip.linked{background:rgba(143,227,255,.18);border-color:var(--cyan);font-weight:600}
+.chip.linked[aria-pressed="true"]{background:var(--cyan);color:var(--ink)}
+.skills>.skill-result{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px 24px;background:#fff;color:var(--ink);border-radius:4px;font-weight:600;animation:recap-in .35s ease-out}
+.hero .actions{gap:10px}
+.hero .actions .btn{padding-left:18px;padding-right:18px}
+.skill-result .btn-solid{background:var(--ink);color:#fff}
+.skill-result .btn-solid:hover{background:var(--blue)}
+
 @media (max-width:920px){
   nav{display:none}
   .hero-grid{grid-template-columns:1fr;min-height:0;padding-top:32px}
@@ -285,6 +323,22 @@ footer{background:var(--deep);color:var(--pale);font-size:14px;padding:22px 0;bo
   .box{padding:16px 18px}
   .skills>div{grid-template-columns:1fr;gap:10px;padding:16px 18px}
   .actions .btn{width:100%}
+  .recap{padding:14px 16px}
+  .recap h2{font-size:25px}
+  .recap-head{gap:12px}
+  .recap-head p{font-size:13.5px}
+  .recap-head img{width:56px;height:70px}
+  .recap dl{grid-template-columns:1fr;gap:4px;margin-top:10px}
+  .recap dl>div{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:4px 10px}
+  .recap dt{font-size:12px}
+  .recap dd{font-size:13.5px;text-align:right}
+  .recap ul{margin-top:9px;font-size:13.5px;line-height:1.38}
+  .recap li{padding-bottom:4px}
+  .recap-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+  .recap-actions .btn{width:100%;padding:8px 6px;font-size:14px}
+  .recap-actions .btn:first-child{grid-column:1/-1}
+  .recap-coords{margin-top:8px;font-size:13px;gap:2px 14px}
+  .recap .copied{min-height:0;margin-top:4px;font-size:12.5px}
   .build.pinned .btn{padding:10px 18px;font-size:15px}
 }
 @media (prefers-reduced-motion:reduce){
@@ -295,7 +349,7 @@ footer{background:var(--deep);color:var(--pale);font-size:14px;padding:22px 0;bo
 }
 @media print{
   header{position:static}
-  .crosshair,.ruler,.sim,.actions,.scan{display:none}
+  .crosshair,.ruler,.sim,.actions,.scan,.open-recap,.skills-hint,.recap{display:none}
   .js .draw{--d:1}
   .js .draw>*,.js .flow li,.lead .w{opacity:1;transform:none}
   .js .title,.js .shot{clip-path:none;transform:none}

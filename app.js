@@ -99,6 +99,15 @@
     "Télécharger la carte (PDF)": "Download the card (PDF)",
     "© 2026 Saad Kardad. Conçu et développé à Marrakech.": "© 2026 Saad Kardad. Designed and built in Marrakech.",
     "Domaines": "Areas",
+    "Résumé 30 s": "30 s summary",
+    "Résumé en 30 secondes": "30-second summary",
+    "Cliquez sur une technologie en bleu clair pour voir le projet où je l'ai utilisée.": "Click a light blue technology to see the project where I used it.",
+    "Copier l'e-mail": "Copy email",
+    "Fermer le résumé": "Close the summary",
+    "Stage chez Wafa Assurance : site web de l'agence et application de gestion des paiements clients.": "Internship at Wafa Assurance: the agency's website and a client payment management application.",
+    "Projet de fin d'études : application de location de voitures avec React.js, Node.js et MongoDB.": "Final-year project: car rental application with React.js, Node.js and MongoDB.",
+    "Aussi : PHP, Laravel, MySQL et C#.": "Also: PHP, Laravel, MySQL and C#.",
+    "Arabe (langue maternelle), français (courant), anglais (intermédiaire).": "Arabic (native), French (fluent), English (intermediate).",
     "Fonctionnement": "How it works",
     "Portrait de Saad Kardad": "Portrait of Saad Kardad",
     "Retourner la carte de visite": "Flip the business card",
@@ -344,6 +353,89 @@
       btn.addEventListener("pointerleave", () => { btn.style.transform = ""; });
     });
   }
+
+  /* ---------- résumé pour les recruteurs ---------- */
+  const recap = $(".recap");
+  const openRecap = () => { if (!recap.open && recap.showModal) { recap.showModal(); recap.scrollTop = 0; } };
+  $$(".open-recap").forEach(b => b.addEventListener("click", openRecap));
+  $(".recap-close").addEventListener("click", () => recap.close());
+  recap.addEventListener("click", e => { if (e.target === recap) recap.close(); });   // clic à côté
+  if (location.hash === "#resume") openRecap();       // lien direct à envoyer à un recruteur
+  addEventListener("hashchange", () => { if (location.hash === "#resume") openRecap(); });
+
+  /* ---------- WhatsApp et copie de l'e-mail ---------- */
+  const hello = () => isEn() ? "Hello Saad, I saw your portfolio." : "Bonjour Saad, j'ai vu votre portfolio.";
+  const setWhatsapp = () => $$(".whatsapp").forEach(a => { a.href = "https://wa.me/212615307782?text=" + encodeURIComponent(hello()); });
+  setWhatsapp();
+  onLang.push(setWhatsapp);
+
+  const mail = "saadkardad8@gmail.com";
+  function copyFallback(host) {
+    const area = document.createElement("textarea");
+    area.value = mail;
+    host.appendChild(area);
+    area.select();
+    const ok = document.execCommand("copy");
+    area.remove();
+    return ok;
+  }
+  $$(".copy-mail").forEach(btn => btn.addEventListener("click", async () => {
+    const host = btn.closest("dialog") || btn.closest(".contact");
+    let ok = true;
+    try { await navigator.clipboard.writeText(mail); } catch { ok = copyFallback(host); }
+    const status = $(".copied", host);
+    status.textContent = ok ? (isEn() ? "Email copied: " : "E-mail copié : ") + mail : mail;
+    clearTimeout(status.timer);
+    status.timer = setTimeout(() => { status.textContent = ""; }, 4000);
+  }));
+  onLang.push(() => $$(".copied").forEach(p => { p.textContent = ""; }));
+
+  /* ---------- compétences : voir le projet qui utilise une technologie ---------- */
+  const projects = {
+    location: { href: "#projets", fr: "Application de location de voitures (projet de fin d'études)", en: "Car rental application (final-year project)" },
+    stocks: { href: "#projet-stocks", fr: "Gestion et suivi des stocks (mini-projet)", en: "Stock management and tracking (mini project)" },
+    marque: { href: "#projet-marque", fr: "Marque streetwear (projet entrepreneurial)", en: "Streetwear brand (entrepreneurial project)" }
+  };
+  const usedIn = {
+    "React.js": "location", "Tailwind CSS": "location", "Node.js": "location", "Express": "location",
+    "MongoDB": "location", "Git": "location", "GitHub": "location",
+    "C#": "stocks", "MySQL / SQL": "stocks", "Canva": "marque"
+  };
+  const result = document.createElement("div");
+  result.className = "skill-result";
+  result.setAttribute("role", "status");
+  let picked = null;
+  function showSkill() {
+    if (!picked) { result.remove(); return; }
+    const project = projects[usedIn[picked.dataset.tech]];
+    const lang = isEn() ? "en" : "fr";
+    result.innerHTML = "";
+    const text = document.createElement("p");
+    text.textContent = `${picked.dataset.tech} : ${project[lang]}`;
+    const link = document.createElement("a");
+    link.href = project.href;
+    link.className = "btn btn-solid btn-small";
+    link.textContent = isEn() ? "See the project" : "Voir le projet";
+    result.append(text, link);
+    picked.closest(".skills > div").after(result);
+  }
+  $$(".chip").forEach(chip => {
+    const tech = chip.textContent;
+    if (!usedIn[tech]) return;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "chip linked";
+    button.style.cssText = chip.style.cssText;
+    button.dataset.tech = button.textContent = tech;
+    button.setAttribute("aria-pressed", "false");
+    chip.replaceWith(button);
+    button.addEventListener("click", () => {
+      picked = picked === button ? null : button;
+      $$(".chip.linked").forEach(c => c.setAttribute("aria-pressed", String(c === picked)));
+      showSkill();
+    });
+  });
+  onLang.push(showSkill);
 
   /* ---------- langue demandée par l'adresse ou mémorisée ---------- */
   let saved = new URLSearchParams(location.search).get("lang");

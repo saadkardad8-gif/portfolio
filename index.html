@@ -9,6 +9,12 @@
 <meta property="og:title" content="Saad Kardad, développeur web full stack">
 <meta property="og:description" content="Développeur web full stack junior à Marrakech. Projets, parcours et CV.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://portfolio-mu-steel-zfnj86dv36.vercel.app/">
+<meta property="og:image" content="https://portfolio-mu-steel-zfnj86dv36.vercel.app/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Saad Kardad, développeur web full stack à Marrakech">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0a3a78">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a3a78'/%3E%3Cpath d='M21 20L8 32l13 12M43 20l13 12-13 12' fill='none' stroke='%238fe3ff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M37 15L27 49' fill='none' stroke='%23ffffff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preload" href="fonts/ibm-plex-sans-condensed-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -27,6 +33,7 @@
       <a href="#competences">Compétences</a>
       <a href="#contact">Contact</a>
     </nav>
+    <button class="btn btn-line btn-small head-recap open-recap" type="button">Résumé 30 s</button>
     <button class="btn btn-line btn-small lang-btn" type="button" lang="en" aria-label="Switch to English">EN</button>
     <a class="btn btn-solid btn-small" href="SaadkardadCv.pdf" download="CV_Saad_Kardad.pdf">Télécharger le CV</a>
   </div>
@@ -45,7 +52,7 @@
       <div class="actions">
         <a class="btn btn-solid" href="#projets">Voir mes projets</a>
         <a class="btn btn-line" href="SaadkardadCv.pdf" download="CV_Saad_Kardad.pdf">Télécharger le CV</a>
-        <a class="btn btn-line" href="#contact">Me contacter</a>
+        <button class="btn btn-line open-recap" type="button">Résumé en 30 secondes</button>
       </div>
     </div>
     <figure class="portrait">
@@ -169,14 +176,14 @@
   <div class="wrap split">
     <h2 class="title">Autres projets</h2>
     <div class="pair">
-      <article class="project draw">
+      <article class="project draw" id="projet-stocks">
         <p class="meta">Mini-projet, mars 2024</p>
         <h3>Gestion et suivi des stocks</h3>
         <p>Entrées et sorties de produits avec mise à jour automatique des quantités, recherche d'articles et génération de rapports.</p>
         <ol class="flow" aria-label="Fonctionnement"><li>Entrées et sorties</li><li>Quantités à jour</li><li>Rapports</li></ol>
         <ul class="tags" aria-label="Technologies"><li>C# / .NET</li><li>SQL</li></ul>
       </article>
-      <article class="project draw">
+      <article class="project draw" id="projet-marque">
         <p class="meta">Projet entrepreneurial, 2024, en cours</p>
         <h3>Marque streetwear</h3>
         <p>Marque de vêtements moderne et minimaliste : étude de marché, identité visuelle, cahier des charges, maquettes et stratégie de marque.</p>
@@ -190,6 +197,8 @@
 <section class="block sheet dark" id="competences">
   <div class="wrap split">
     <h2 class="title">Compétences</h2>
+    <div class="skills-zone">
+    <p class="skills-hint">Cliquez sur une technologie en bleu clair pour voir le projet où je l'ai utilisée.</p>
     <dl class="skills">
       <div class="draw"><dt>Front-end</dt><dd data-chips>HTML5, CSS3, JavaScript, React.js, Tailwind CSS, Bootstrap</dd></div>
       <div class="draw"><dt>Back-end</dt><dd data-chips>Node.js, Express, PHP, Laravel, API REST</dd></div>
@@ -201,6 +210,7 @@
       <div class="draw"><dt>Qualités</dt><dd>Résolution de problèmes, travail en équipe, gestion du temps, adaptabilité, leadership</dd></div>
       <div class="draw"><dt>Centres d'intérêt</dt><dd>Photographie, voyage, musique, aventure</dd></div>
     </dl>
+    </div>
   </div>
 </section>
 
@@ -217,7 +227,10 @@
       </ul>
       <div class="actions">
         <a class="btn btn-solid" href="SaadkardadCv.pdf" download="CV_Saad_Kardad.pdf">Télécharger le CV</a>
+        <a class="btn btn-line whatsapp" href="https://wa.me/212615307782" target="_blank" rel="noopener">WhatsApp</a>
+        <button class="btn btn-line copy-mail" type="button">Copier l'e-mail</button>
       </div>
+      <p class="copied" role="status"></p>
     </div>
     <div class="card-zone">
       <button class="card-btn" type="button" aria-pressed="false" aria-label="Retourner la carte de visite">
@@ -232,6 +245,35 @@
   </div>
 </section>
 </main>
+
+<dialog class="recap" aria-labelledby="recap-nom">
+  <button class="recap-close" type="button" aria-label="Fermer le résumé">×</button>
+  <div class="recap-head">
+    <img src="photo.jpg" width="560" height="720" alt="Portrait de Saad Kardad">
+    <div>
+      <h2 id="recap-nom">Saad Kardad</h2>
+      <p>Future Engineer et développeur web full stack à Marrakech</p>
+    </div>
+  </div>
+  <dl>
+    <div><dt>Contrat</dt><dd>CDI, CDD, stage ou freelance</dd></div>
+    <div><dt>Disponibilité</dt><dd>Après mon stage actuel</dd></div>
+    <div><dt>Lieu</dt><dd>Marrakech</dd></div>
+  </dl>
+  <ul>
+    <li>Stage chez Wafa Assurance : site web de l'agence et application de gestion des paiements clients.</li>
+    <li>Projet de fin d'études : application de location de voitures avec React.js, Node.js et MongoDB.</li>
+    <li>Aussi : PHP, Laravel, MySQL et C#.</li>
+    <li>Arabe (langue maternelle), français (courant), anglais (intermédiaire).</li>
+  </ul>
+  <div class="recap-actions">
+    <a class="btn btn-ink" href="SaadkardadCv.pdf" download="CV_Saad_Kardad.pdf">Télécharger le CV</a>
+    <a class="btn btn-ink whatsapp" href="https://wa.me/212615307782" target="_blank" rel="noopener">WhatsApp</a>
+    <button class="btn btn-ink copy-mail" type="button">Copier l'e-mail</button>
+  </div>
+  <p class="recap-coords"><a href="mailto:saadkardad8@gmail.com">saadkardad8@gmail.com</a> <a href="tel:+212615307782">+212 6 15 30 77 82</a></p>
+  <p class="copied" role="status"></p>
+</dialog>
 
 <footer class="dark"><div class="wrap">© 2026 Saad Kardad. Conçu et développé à Marrakech.</div></footer>
 <script src="app.js"></script>
