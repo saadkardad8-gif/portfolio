@@ -11,6 +11,28 @@
 
   /* ---------- version anglaise ---------- */
   const en = {
+    "Application de paiements": "Payment application",
+    "Développée pendant mon stage chez Wafa Assurance, agence Ahl Al Khair : paiements des clients, reçus PDF, caisse et clôture quotidienne.": "Built during my internship at Wafa Assurance, Ahl Al Khair agency: client payments, PDF receipts, cash register and daily closing.",
+    "Tableau de bord : avances du jour, reste à recouvrer et état de la caisse.": "Dashboard: today's advances, outstanding balance and cash register status.",
+    "Saisie : le reste à payer se calcule automatiquement.": "Entry form: the remaining balance is calculated automatically.",
+    "Clôture de caisse : comptage des billets et calcul de l'écart.": "Cash closing: banknote count and gap calculation.",
+    "Captures d'une copie locale avec des données fictives. Paiement par carte en simulation pour l'instant.": "Screenshots from a local copy with fictitious data. Card payment is simulated for now.",
+    "Application web de commande de repas frais : menu filtrable par catégorie, panier avec quantités et envoi de la commande à une API.": "Web app for ordering fresh meals: menu filtered by category, cart with quantities and order sent to an API.",
+    "Cliquez sur une capture pour l'agrandir.": "Click a screenshot to enlarge it.",
+    "Tableau de bord de l'application de paiements, avec des données fictives": "Payment application dashboard, with fictitious data",
+    "Formulaire de saisie d'un paiement, avec des données fictives": "Payment entry form, with fictitious data",
+    "Écran de clôture de caisse, avec des données fictives": "Cash closing screen, with fictitious data",
+    "Agrandir la capture du tableau de bord": "Enlarge the dashboard screenshot",
+    "Agrandir la capture de la saisie": "Enlarge the entry form screenshot",
+    "Agrandir la capture de la clôture": "Enlarge the cash closing screenshot",
+    "Menu de GreenFood avec les filtres par catégorie": "GreenFood menu with category filters",
+    "Page d'accueil de GreenFood": "GreenFood home page",
+    "Panier de GreenFood avec le total de la commande": "GreenFood cart with the order total",
+    "Agrandir la capture du menu": "Enlarge the menu screenshot",
+    "Agrandir la capture de l'accueil": "Enlarge the home page screenshot",
+    "Agrandir la capture du panier": "Enlarge the cart screenshot",
+    "Capture agrandie": "Enlarged screenshot",
+    "Fermer la capture": "Close the screenshot",
     "Aller au contenu": "Skip to content",
     "Profil": "Profile",
     "Parcours": "Journey",
@@ -199,7 +221,7 @@
     }), { rootMargin: "0px 0px -12% 0px" });
     reveal.forEach(el => {
       if (!el.classList.contains("title")) return io.observe(el);
-      const box = el.parentElement;
+      const box = el.closest(".tour-grid") || el.parentElement;   // .tour-text n'a pas de boîte sur mobile
       if (!titles.has(box)) titles.set(box, []);
       titles.get(box).push(el);
       tio.observe(box);
@@ -273,6 +295,76 @@
     }, 5200);
   });
 
+  /* ---------- captures : du plan à l'écran réel ---------- */
+  const tour = $(".tour"), track = $(".track", tour), slides = $$(".slide", tour);
+  const caps = $$(".tour-caps button", tour), tourBar = $(".tour-bar i", tour);
+  const fan = $(".fan"), band = $$(".band p");
+  const ease = v => v * v * (3 - 2 * v);
+  const paint = (el, p) => {
+    el.style.setProperty("--p", p.toFixed(3));
+    el.classList.toggle("scanning", p > 0.01 && p < 0.99);
+  };
+
+  function layoutTour() {
+    // écran moyen et bas : les captures seraient trop petites, on les empile
+    const need = innerWidth <= 640 ? 660 : innerWidth <= 920 ? 880 : 560;
+    const pin = !calm && innerHeight >= need;
+    tour.classList.toggle("pinned", pin);
+    if (!pin) { track.style.transform = ""; slides.forEach(s => { s.inert = false; }); }
+  }
+  function scrollShots() {
+    const r = tour.getBoundingClientRect();
+    if (tour.classList.contains("pinned")) {
+      const p = clamp(-(r.top - 73) / (r.height - innerHeight));
+      const x = ease(clamp((p - 0.22) / 0.16)) + ease(clamp((p - 0.6) / 0.16));
+      const now = Math.round(x);
+      track.style.transform = `translateX(calc(${-x} * (100% + 24px)))`;
+      tourBar.style.transform = `scaleX(${p})`;
+      const wipes = [(innerHeight * 0.55 - r.top) / (innerHeight * 0.55), (p - 0.3) / 0.2, (p - 0.68) / 0.2];
+      slides.forEach((slide, i) => {
+        paint($(".shotbtn", slide), clamp(wipes[i]));
+        slide.inert = i !== now;
+      });
+      caps.forEach((c, i) => c.setAttribute("aria-current", String(i === now)));
+    } else {
+      slides.forEach(slide => {
+        const top = slide.getBoundingClientRect().top;
+        paint($(".shotbtn", slide), calm ? 1 : clamp((innerHeight * 0.92 - top) / (innerHeight * 0.5)));
+      });
+    }
+    const g = calm ? 1 : clamp((innerHeight * 0.95 - fan.getBoundingClientRect().top) / (innerHeight * 0.7));
+    fan.style.setProperty("--g", ease(g).toFixed(3));
+    $$(".shotbtn", fan).forEach(el => {
+      const top = innerWidth <= 640 ? el.getBoundingClientRect().top : fan.getBoundingClientRect().top;
+      paint(el, calm ? 1 : clamp((innerHeight * 0.92 - top) / (innerHeight * 0.5)));
+    });
+  }
+  function scrollBand() {
+    if (calm) return;
+    const r = band[0].parentElement.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > innerHeight) return;
+    const way = (innerHeight - r.top) * 0.55;
+    band[0].style.transform = `translateX(${-way}px)`;
+    band[1].style.transform = `translateX(${way - (innerHeight + r.height) * 0.55}px)`;
+  }
+  caps.forEach((cap, i) => cap.addEventListener("click", () => {
+    const r = tour.getBoundingClientRect();
+    scrollTo({ top: scrollY + r.top - 73 + (r.height - innerHeight) * [0.18, 0.52, 0.92][i], behavior: "smooth" });
+  }));
+  layoutTour();
+
+  /* capture agrandie */
+  const zoom = $(".zoom"), zoomImg = $("img", zoom);
+  $$(".shotbtn").forEach(btn => btn.addEventListener("click", () => {
+    const img = $(".over", btn);
+    zoomImg.src = img.getAttribute("src");
+    zoomImg.alt = $("p", zoom).textContent = img.alt;
+    if (zoom.showModal && !zoom.open) zoom.showModal();
+    $(".zoom-scroll", zoom).scrollTo(0, 0);
+  }));
+  $(".zoom-close").addEventListener("click", () => zoom.close());
+  zoom.addEventListener("click", e => { if (e.target === zoom || e.target === zoomImg) zoom.close(); });
+
   /* ---------- tout ce qui suit le défilement ---------- */
   const ruler = $(".ruler i");
   const timeline = $(".timeline");
@@ -310,10 +402,12 @@
     }
     inkLead();
     scrollBuild();
+    scrollShots();
+    scrollBand();
   }
   const queue = () => { if (!waiting) { waiting = true; requestAnimationFrame(update); } };
   addEventListener("scroll", queue, { passive: true });
-  addEventListener("resize", () => { layoutBuild(); queue(); });
+  addEventListener("resize", () => { layoutBuild(); layoutTour(); queue(); });
   update();
 
   /* ---------- portrait : dessiné dès l'arrivée ---------- */
@@ -392,14 +486,18 @@
 
   /* ---------- compétences : voir le projet qui utilise une technologie ---------- */
   const projects = {
+    paiements: { href: "#paiements", fr: "Application de paiements (stage)", en: "Payment application (internship)" },
     location: { href: "#projets", fr: "Application de location de voitures (projet de fin d'études)", en: "Car rental application (final-year project)" },
+    greenfood: { href: "#greenfood", fr: "GreenFood (commande de repas)", en: "GreenFood (meal ordering)" },
     stocks: { href: "#projet-stocks", fr: "Gestion et suivi des stocks (mini-projet)", en: "Stock management and tracking (mini project)" },
     marque: { href: "#projet-marque", fr: "Marque streetwear (projet entrepreneurial)", en: "Streetwear brand (entrepreneurial project)" }
   };
   const usedIn = {
-    "React.js": "location", "Tailwind CSS": "location", "Node.js": "location", "Express": "location",
-    "MongoDB": "location", "Git": "location", "GitHub": "location",
-    "C#": "stocks", "MySQL / SQL": "stocks", "Canva": "marque"
+    "HTML5": ["greenfood"], "CSS3": ["greenfood"], "JavaScript": ["paiements", "greenfood"],
+    "React.js": ["location"], "Tailwind CSS": ["location"],
+    "Node.js": ["paiements", "location", "greenfood"], "Express": ["paiements", "location", "greenfood"],
+    "MongoDB": ["location"], "Git": ["location"], "GitHub": ["location"],
+    "C#": ["stocks"], "MySQL / SQL": ["paiements", "stocks"], "Canva": ["marque"]
   };
   const result = document.createElement("div");
   result.className = "skill-result";
@@ -407,16 +505,18 @@
   let picked = null;
   function showSkill() {
     if (!picked) { result.remove(); return; }
-    const project = projects[usedIn[picked.dataset.tech]];
     const lang = isEn() ? "en" : "fr";
     result.innerHTML = "";
-    const text = document.createElement("p");
-    text.textContent = `${picked.dataset.tech} : ${project[lang]}`;
-    const link = document.createElement("a");
-    link.href = project.href;
-    link.className = "btn btn-solid btn-small";
-    link.textContent = isEn() ? "See the project" : "Voir le projet";
-    result.append(text, link);
+    const title = document.createElement("p");
+    title.textContent = isEn() ? `${picked.dataset.tech} is used in:` : `${picked.dataset.tech}, utilisé dans :`;
+    result.append(title);
+    usedIn[picked.dataset.tech].forEach(key => {
+      const link = document.createElement("a");
+      link.href = projects[key].href;
+      link.className = "btn btn-solid btn-small";
+      link.textContent = projects[key][lang];
+      result.append(link);
+    });
     picked.closest(".skills > div").after(result);
   }
   $$(".chip").forEach(chip => {

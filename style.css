@@ -279,11 +279,78 @@ html:not(.js) .skills-hint,html:not(.js) .open-recap,html:not(.js) .copy-mail{di
 button.chip{font-family:inherit;line-height:inherit;cursor:pointer}
 .chip.linked{background:rgba(143,227,255,.18);border-color:var(--cyan);font-weight:600}
 .chip.linked[aria-pressed="true"]{background:var(--cyan);color:var(--ink)}
-.skills>.skill-result{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px 24px;background:#fff;color:var(--ink);border-radius:4px;font-weight:600;animation:recap-in .35s ease-out}
+.skills>.skill-result{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:8px 10px;padding:16px 24px;background:#fff;color:var(--ink);border-radius:4px;font-weight:600;animation:recap-in .35s ease-out}
 .hero .actions{gap:10px}
 .hero .actions .btn{padding-left:18px;padding-right:18px}
-.skill-result .btn-solid{background:var(--ink);color:#fff}
+.skill-result p{flex:1 0 100%}
+.skill-result .btn-solid{background:var(--ink);color:#fff;white-space:normal;text-align:left}
 .skill-result .btn-solid:hover{background:var(--blue)}
+
+/* bande de technologies qui glisse avec le défilement */
+.band{background:var(--deep);overflow:hidden;padding:22px 0;border-bottom:1px solid #6e96cc;user-select:none}
+.band p{display:flex;width:max-content;white-space:nowrap;font-family:"PlexCond",sans-serif;font-size:clamp(40px,6.5vw,88px);line-height:1.18;will-change:transform}
+.band span{display:flex;align-items:center}
+.band span::after{content:"";width:.18em;height:.18em;margin:0 .45em;background:var(--cyan);transform:rotate(45deg)}
+.band p+p{color:transparent;-webkit-text-stroke:1.5px var(--cyan)}
+
+/* captures : du plan à l'écran réel (--p va de 0 à 1) */
+.shotbtn{--p:1;display:block;position:relative;width:100%;padding:0;border:2px solid var(--cyan);border-radius:6px;overflow:hidden;isolation:isolate;background:var(--plan);cursor:zoom-in;line-height:0}
+.light .shotbtn{border-color:var(--blue)}
+.shotbtn img{width:100%;height:auto;aspect-ratio:16/10}
+.shotbtn .under{filter:grayscale(1) invert(1) contrast(1.5);mix-blend-mode:screen}
+.shotbtn .over{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--p)*100%) 0 0)}
+.shotbtn i{position:absolute;top:0;bottom:0;width:3px;margin-left:-1.5px;left:calc(var(--p)*100%);background:var(--cyan);box-shadow:0 0 22px 6px rgba(143,227,255,.7);opacity:0}
+.shotbtn.scanning i{opacity:1}
+html:not(.js) .shotbtn .under{display:none}
+html:not(.js) .shotbtn .over{position:static}
+
+/* application de paiements : la page défile, les écrans avancent de côté */
+.tour .wrap{padding-top:72px;padding-bottom:72px;width:100%}
+.tour-grid{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center}
+.tour-sub{margin-top:14px;color:var(--pale)}
+.tour .title{font-size:clamp(34px,3.4vw,46px)}
+.tour-caps{display:none}
+.tour .tags{margin-top:18px}
+.note{margin-top:14px;font-size:13.5px;line-height:1.5;color:var(--pale)}
+.track{display:grid;gap:28px}
+.slide figcaption{margin-top:10px;font-weight:600;line-height:1.45}
+.tour-bar{display:none}
+.tour.pinned{height:360vh}
+.tour.pinned .tour-pin{position:sticky;top:73px;height:calc(100svh - 73px);display:flex;align-items:center;overflow:hidden}
+.tour.pinned .wrap{padding-top:12px;padding-bottom:12px}
+.tour.pinned .tour-view{min-width:0;width:100%;max-width:calc((100svh - 140px)*1.6);justify-self:center;overflow:hidden;overflow:clip}
+.tour.pinned .track{display:flex;gap:24px;will-change:transform}
+.tour.pinned .slide{flex:0 0 100%;min-width:0}
+.tour.pinned figcaption{display:none}
+.tour.pinned .tour-caps{display:block;margin-top:20px}
+.tour-caps button{display:block;width:100%;text-align:left;font:inherit;font-size:15px;line-height:1.4;color:var(--pale);background:none;border:0;border-left:3px solid rgba(143,227,255,.25);padding:7px 0 7px 14px;cursor:pointer;transition:border-color .3s,color .3s}
+.tour-caps button[aria-current="true"]{color:#fff;font-weight:600;border-left-color:var(--cyan)}
+.tour.pinned .tour-bar{display:block;height:4px;margin-top:14px;background:rgba(143,227,255,.25)}
+.tour-bar i{display:block;height:100%;background:var(--cyan);transform-origin:left;transform:scaleX(0)}
+
+/* GreenFood : les trois écrans s'écartent (--g va de 0 à 1) */
+.food{padding:clamp(72px,9vw,128px) 0 clamp(40px,5vw,64px);overflow:hidden}
+.food-head{display:grid;grid-template-columns:minmax(0,280px) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:start}
+.food-head p{max-width:60ch;color:#2a4466;font-size:18px}
+.food .tags{margin-top:16px}
+.fan{--g:1;position:relative;margin-top:48px;aspect-ratio:2.35/1}
+.fan .shotbtn{position:absolute;width:48%;top:0;left:26%;box-shadow:0 20px 40px rgba(10,37,71,.22)}
+.fan .left{transform:translate(calc(var(--g)*-54%),calc(var(--g)*20%)) rotate(calc(var(--g)*-5deg))}
+.fan .right{transform:translate(calc(var(--g)*54%),calc(var(--g)*20%)) rotate(calc(var(--g)*5deg))}
+.fan .mid{z-index:2;transform:scale(calc(.94 + var(--g)*.08))}
+.fan .shotbtn:hover,.fan .shotbtn:focus-visible{z-index:3}
+.fan-hint{margin-top:22px;text-align:center;font-size:14px;color:#2a4466}
+html:not(.js) .fan-hint{display:none}
+
+/* capture agrandie */
+.zoom{margin:auto;width:min(1180px,calc(100vw - 20px));max-width:none;max-height:calc(100svh - 20px);padding:48px 12px 12px;border:0;border-radius:8px;background:var(--deep);color:#fff;overflow:hidden}
+.zoom::backdrop{background:rgba(4,24,52,.85)}
+.zoom[open]{animation:recap-in .35s cubic-bezier(.22,1,.36,1)}
+.zoom-close{position:absolute;right:8px;top:4px;width:40px;height:40px;border:0;background:none;color:#fff;font-size:30px;line-height:1;cursor:pointer}
+.zoom-scroll{overflow:auto;max-height:calc(100svh - 130px)}
+.zoom img{width:auto;max-width:100%;height:auto;max-height:calc(100svh - 130px);margin:0 auto}
+.zoom p{margin-top:8px;font-size:14px;text-align:center;color:var(--pale)}
+body:has(.zoom[open]){overflow:hidden}
 
 @media (max-width:920px){
   nav{display:none}
@@ -308,6 +375,16 @@ button.chip{font-family:inherit;line-height:inherit;cursor:pointer}
   .build .title{font-size:34px}
   .build-sub{font-size:15px;line-height:1.5}
   .build.pinned .tags{display:none}
+  .tour-grid,.food-head{grid-template-columns:1fr}
+  .tour.pinned .tags,.tour.pinned .note{margin-top:10px}
+  .tour.pinned .tour-grid{display:flex;flex-direction:column;align-items:stretch;gap:0}
+  .tour.pinned .tour-text{display:contents}
+  .tour.pinned .tour-view{order:1;align-self:center;margin-top:16px;max-width:calc((100svh - 480px)*1.6);min-width:min(100%,300px)}
+  .tour.pinned .tour-caps,.tour.pinned .tags,.tour.pinned .note{order:2}
+  .tour.pinned .tour-sub{margin-top:6px;font-size:14px;line-height:1.45}
+  .tour.pinned .title{font-size:30px}
+  .tour.pinned .tour-caps{margin-top:10px}
+  .tour-caps button{font-size:14px;padding-top:4px;padding-bottom:4px}
   .steps{margin-top:16px}
   .sim{margin-top:14px}
 }
@@ -340,6 +417,13 @@ button.chip{font-family:inherit;line-height:inherit;cursor:pointer}
   .recap-coords{margin-top:8px;font-size:13px;gap:2px 14px}
   .recap .copied{min-height:0;margin-top:4px;font-size:12.5px}
   .build.pinned .btn{padding:10px 18px;font-size:15px}
+  .band{padding:14px 0}
+  .fan{aspect-ratio:auto;display:grid;gap:18px;margin-top:32px}
+  .fan .shotbtn{position:relative;width:100%;left:0;transform:none}
+  .fan .mid{order:-1;transform:none}
+  .fan .left{transform:translateX(calc((1 - var(--g))*-60px))}
+  .fan .right{transform:translateX(calc((1 - var(--g))*60px))}
+  .zoom img{max-width:none;width:880px;max-height:none}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -351,6 +435,12 @@ button.chip{font-family:inherit;line-height:inherit;cursor:pointer}
   header{position:static}
   .crosshair,.ruler,.sim,.actions,.scan,.open-recap,.skills-hint,.recap{display:none}
   .js .draw{--d:1}
+  .band,.fan-hint,.zoom,.tour-bar{display:none}
+  .shotbtn{--p:1!important}
+  .shotbtn i{display:none}
+  .tour.pinned,.tour.pinned .tour-pin{height:auto;position:static}
+  .tour.pinned .track{display:grid;transform:none!important}
+  .tour.pinned figcaption{display:block}
   .js .draw>*,.js .flow li,.lead .w{opacity:1;transform:none}
   .js .title,.js .shot{clip-path:none;transform:none}
 }
