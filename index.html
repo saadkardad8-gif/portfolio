@@ -194,7 +194,44 @@ html:not(.js) .card-hint{display:none}
 ul.points li{position:static}
 .lang-btn{font-family:inherit;background:none;cursor:pointer;min-width:48px}
 
+/* relief et 3D */
+.hero{position:relative;isolation:isolate}
+.hero::before{content:"";position:absolute;z-index:-1;left:-50%;right:-50%;bottom:0;height:62%;
+  background:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0 1px,transparent 1px 72px),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.16) 0 1px,transparent 1px 72px);
+  transform:perspective(520px) rotateX(62deg);transform-origin:bottom;
+  -webkit-mask:linear-gradient(transparent,#000 75%);mask:linear-gradient(transparent,#000 75%);
+  animation:floor 3.5s linear infinite}
+@keyframes floor{to{background-position:0 0,0 72px}}
+.hero h1{text-shadow:1px 1px 0 var(--blue-deep),2px 2px 0 var(--blue-deep),3px 3px 0 var(--blue-deep),4px 4px 0 var(--blue-deep),5px 5px 0 var(--blue-deep),6px 6px 0 var(--blue-deep),7px 7px 0 var(--blue-deep),8px 8px 0 var(--blue-deep),14px 18px 28px rgba(0,0,0,.35)}
+.contact h2{text-shadow:1px 1px 0 var(--blue-deep),2px 2px 0 var(--blue-deep),3px 3px 0 var(--blue-deep),4px 4px 0 var(--blue-deep),5px 5px 0 var(--blue-deep),10px 12px 20px rgba(0,0,0,.3)}
+
+.portrait{will-change:transform}
+.portrait::before{z-index:1;transform:translate(calc(18px + var(--px,0px)),calc(18px + var(--py,0px)))}
+.portrait img{z-index:2;box-shadow:0 30px 50px rgba(0,0,0,.35)}
+.orbit{list-style:none;position:absolute;left:50%;top:84%;width:0;height:0}
+.orbit li{position:absolute;left:0;top:0;white-space:nowrap;font-size:13.5px;font-weight:700;padding:6px 12px;border-radius:8px;
+  background:#fff;color:var(--blue-deep);box-shadow:0 5px 0 var(--yellow),0 14px 22px rgba(0,0,0,.3)}
+
+.hero .btn-yellow{box-shadow:0 5px 0 rgba(0,0,0,.28)}
+.hero .btn-yellow:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.28)}
+
+.project{position:relative;overflow:hidden;will-change:transform}
+.project::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(420px circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.28),transparent 60%)}
+.project:not(.main)::after{background:radial-gradient(360px circle at var(--gx,50%) var(--gy,50%),color-mix(in srgb,var(--blue) 14%,transparent),transparent 65%)}
+.project.tilting::after{opacity:1}
+.js .project.tilting,.card-btn.tilting{transition:transform .08s linear,box-shadow .3s}
+.card-btn{transition:transform .5s}
+
+.js .reveal{transform:perspective(900px) translateY(40px) rotateX(-22deg);transform-origin:50% 100%}
+.js .reveal.in{transform:none}
+
 @media (max-width:920px){
+  .portrait{justify-self:center!important}
+  .orbit li{font-size:12px;padding:5px 9px}
+
   .wanted .wrap{grid-template-columns:1fr}
   .wanted-btn{justify-self:start}
 
@@ -216,7 +253,7 @@ ul.points li{position:static}
   .actions .btn{width:100%}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
-@media print{.js .reveal{opacity:1;transform:none}.cur-dot,.cur-ring{display:none}header{position:static}.actions{display:none}}
+@media print{.orbit,.hero::before{display:none}.js .reveal{opacity:1;transform:none}.cur-dot,.cur-ring{display:none}header{position:static}.actions{display:none}}
 </style>
 </head>
 <body>
@@ -256,6 +293,7 @@ ul.points li{position:static}
     </div>
     <div class="portrait">
       <img src="photo.jpg" width="560" height="720" alt="Portrait de Saad Kardad">
+      <ul class="orbit" aria-hidden="true"><li>React.js</li><li>Node.js</li><li>Tailwind CSS</li><li>MongoDB</li><li>MySQL</li><li>PHP</li><li>JavaScript</li></ul>
     </div>
   </div>
 </section>
@@ -463,6 +501,72 @@ ul.points li{position:static}
   // carte de visite : recto / verso
   const card = document.querySelector(".card-btn");
   card.addEventListener("click", () => card.setAttribute("aria-pressed", card.classList.toggle("flipped")));
+
+  // 3D : technologies en orbite autour de la photo
+  const portrait = document.querySelector(".portrait");
+  const orbit = [...document.querySelectorAll(".orbit li")];
+  let angle = 0.6, last = 0, heroVisible = true, spinning = false;
+
+  function placeOrbit() {
+    const w = portrait.offsetWidth;
+    const radius = Math.min(w * 0.64, innerWidth / 2 - 52);
+    orbit.forEach((li, i) => {
+      const a = angle + i * Math.PI * 2 / orbit.length;
+      const depth = Math.sin(a);                 // -1 derrière, 1 devant
+      const x = Math.cos(a) * radius;
+      const y = depth * w * 0.11;
+      li.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) scale(${0.86 + depth * 0.18})`;
+      li.style.zIndex = depth < 0 ? 0 : 3;       // passe derrière puis devant la photo
+      li.style.opacity = 0.72 + (depth + 1) * 0.14;
+    });
+  }
+  function spin(now) {
+    if (!heroVisible) { spinning = false; return; }
+    angle += Math.min(now - last, 50) * 0.00035;
+    last = now;
+    placeOrbit();
+    requestAnimationFrame(spin);
+  }
+  function startSpin() {
+    if (spinning || calm) return;
+    spinning = true;
+    last = performance.now();
+    requestAnimationFrame(spin);
+  }
+  placeOrbit();
+  addEventListener("resize", placeOrbit);
+  new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; if (heroVisible) startSpin(); }).observe(portrait);
+
+  // inclinaison 3D qui suit la souris
+  if (!calm && matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    const hero = document.querySelector(".hero");
+    hero.addEventListener("pointermove", e => {
+      const r = hero.getBoundingClientRect();
+      const dx = (e.clientX - r.left) / r.width - 0.5;
+      const dy = (e.clientY - r.top) / r.height - 0.5;
+      portrait.style.transform = `perspective(900px) rotateY(${dx * 22}deg) rotateX(${-dy * 16}deg)`;
+      portrait.style.setProperty("--px", `${-dx * 28}px`);
+      portrait.style.setProperty("--py", `${-dy * 28}px`);
+    });
+    hero.addEventListener("pointerleave", () => {
+      portrait.style.transform = "";
+      portrait.style.removeProperty("--px");
+      portrait.style.removeProperty("--py");
+    });
+    document.querySelectorAll(".project, .card-btn").forEach(el => {
+      el.addEventListener("pointermove", e => {
+        const r = el.getBoundingClientRect();
+        const dx = (e.clientX - r.left) / r.width - 0.5;
+        const dy = (e.clientY - r.top) / r.height - 0.5;
+        const force = r.width > 600 ? 7 : 12;
+        el.classList.add("tilting");
+        el.style.transform = `perspective(1000px) rotateY(${dx * force}deg) rotateX(${-dy * force}deg) translateY(-4px)`;
+        el.style.setProperty("--gx", `${(dx + 0.5) * 100}%`);
+        el.style.setProperty("--gy", `${(dy + 0.5) * 100}%`);
+      });
+      el.addEventListener("pointerleave", () => { el.classList.remove("tilting"); el.style.transform = ""; });
+    });
+  }
 
   // version française / anglaise
   const en = {
