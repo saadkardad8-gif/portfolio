@@ -604,14 +604,18 @@
   const netSay = state => { netState = state; netStatus.textContent = state ? netText[state][isEn() ? "en" : "fr"] : ""; };
   onLang.push(() => netSay(netState));
   // une vraie requête : « connecté au Wi-Fi » ne veut pas toujours dire « Internet marche »
-  const reachable = () => fetch("robots.txt?t=" + Date.now(), { cache: "no-store" }).then(() => true, () => false);
+  const reachable = () => fetch("robots.txt?t=" + Date.now(), {
+    cache: "no-store",
+    signal: AbortSignal.timeout ? AbortSignal.timeout(6000) : undefined
+  }).then(() => true, () => false);
   function restored() {
     if (!lost.open || netState === "back") return;
     netBox.classList.add("back");
     netSay("back");
     netTimer = setTimeout(() => lost.close(), 1600);
   }
-  const check = async () => { if (await reachable()) restored(); };
+  let dismissed = false;   // « Continuer à lire » : ne plus déranger tant que le réseau n'est pas revenu
+  const check = async () => { if (await reachable()) { dismissed = false; restored(); } };
   function disconnected() {
     clearTimeout(netTimer);
     clearInterval(netPoll);
@@ -624,11 +628,26 @@
     netSay("test");
     if (await reachable()) restored(); else netSay("no");
   });
-  $(".net-close").addEventListener("click", () => lost.close());
+  $(".net-close").addEventListener("click", () => { dismissed = true; lost.close(); });
+  lost.addEventListener("cancel", () => { dismissed = true; });   // touche Échap
   lost.addEventListener("close", () => { if (!lost.open) { clearInterval(netPoll); netSay(""); } });
   addEventListener("offline", disconnected);
   addEventListener("online", check);
   if (!navigator.onLine) disconnected();
+  // l'appareil peut se croire connecté (carte réseau virtuelle, box sans Internet) : on vérifie nous-mêmes
+  let confirming = false;
+  async function heartbeat() {
+    if (document.hidden || lost.open || confirming) return;
+    if (await reachable()) { dismissed = false; return; }
+    if (dismissed) return;
+    confirming = true;   // un second essai avant d'interrompre le visiteur
+    setTimeout(async () => {
+      if (!(await reachable()) && !document.hidden) disconnected();
+      confirming = false;
+    }, 2000);
+  }
+  setInterval(heartbeat, 8000);
+  document.addEventListener("visibilitychange", heartbeat);
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 
   /* ---------- langue demandée par l'adresse ou mémorisée ---------- */
