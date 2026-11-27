@@ -376,6 +376,25 @@
   <p></p>
 </dialog>
 
+<dialog class="net-lost" aria-labelledby="net-title">
+  <div class="net sheet dark">
+    <div class="net-inner">
+      <div class="net-schema" aria-hidden="true">
+        <span class="net-node">Votre appareil</span>
+        <span class="net-wire"><i></i><i></i><b></b></span>
+        <span class="net-node">Internet</span>
+      </div>
+      <h2 id="net-title">Connexion perdue</h2>
+      <p>Vérifiez votre Wi-Fi ou vos données mobiles. La reconnexion se fait toute seule dès que le réseau revient.</p>
+      <div class="actions">
+        <button class="btn btn-solid net-retry" type="button">Réessayer</button>
+        <button class="btn btn-line net-close" type="button">Continuer à lire</button>
+      </div>
+      <p class="net-status" role="status"></p>
+    </div>
+  </div>
+</dialog>
+
 <footer class="dark"><div class="wrap">© 2026 Saad Kardad. Conçu et développé à Marrakech.</div></footer>
 <script src="app.js"></script>
 </body>

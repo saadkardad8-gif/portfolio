@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<script>(function(d){try{var t=localStorage.getItem("theme");if(t==="clair"||t==="sombre")d.dataset.theme=t}catch(e){}})(document.documentElement)</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connexion perdue | Saad Kardad</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0a3a78">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body class="net-page">
+<main class="net sheet dark">
+  <div class="net-inner">
+      <div class="net-schema" aria-hidden="true">
+        <span class="net-node" data-en="Your device">Votre appareil</span>
+        <span class="net-wire"><i></i><i></i><b></b></span>
+        <span class="net-node">Internet</span>
+      </div>
+    <h1 data-en="Connection lost">Connexion perdue</h1>
+    <p data-en="Check your Wi-Fi or mobile data. It reconnects on its own as soon as the network is back.">Vérifiez votre Wi-Fi ou vos données mobiles. La reconnexion se fait toute seule dès que le réseau revient.</p>
+    <div class="actions">
+      <button class="btn btn-solid net-retry" type="button" data-en="Try again">Réessayer</button>
+    </div>
+    <p class="net-status" role="status"></p>
+  </div>
+</main>
+<script>
+(function () {
+  var lang = new URLSearchParams(location.search).get("lang");
+  try { lang = lang || localStorage.getItem("lang"); } catch (e) {}
+  var en = lang === "en";
+  if (en) {
+    document.documentElement.lang = "en";
+    document.title = "Connection lost | Saad Kardad";
+    document.querySelectorAll("[data-en]").forEach(function (el) { el.textContent = el.getAttribute("data-en"); });
+  }
+  var box = document.querySelector(".net"), status = document.querySelector(".net-status"), done = false;
+  function say(fr, english) { status.textContent = en ? english : fr; }
+  function check(asked) {
+    if (done) return;
+    if (asked) say("Vérification…", "Checking…");
+    fetch("/robots.txt?t=" + Date.now(), { cache: "no-store" }).then(function () {
+      if (done) return;
+      done = true;
+      box.classList.add("back");
+      say("Connexion rétablie.", "Connection restored.");
+      setTimeout(function () {
+        if (location.pathname === "/hors-ligne.html") location.replace("/");
+        else location.reload();
+      }, 1200);
+    }, function () {
+      if (asked) say("Toujours pas de connexion.", "Still no connection.");
+    });
+  }
+  say("En attente du réseau…", "Waiting for the network…");
+  document.querySelector(".net-retry").addEventListener("click", function () { check(true); });
+  addEventListener("online", function () { check(false); });
+  setInterval(function () { check(false); }, 5000);
+})();
+</script>
+</body>
+</html>

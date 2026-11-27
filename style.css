@@ -496,6 +496,48 @@ body:has(.zoom[open]){overflow:hidden}
   html[data-theme="clair"] .lost h1+p{color:#2a4466}
 }
 
+/* page de reconnexion */
+.net-lost{width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--plan);color:#fff;overflow:auto;overscroll-behavior:contain}
+.net-lost[open]{animation:menu-in .3s ease-out}
+body:has(.net-lost[open]){overflow:hidden}
+.net{min-height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px var(--pad)}
+.net-page .net{min-height:100svh}
+.net-inner{width:100%;max-width:620px}
+.net h1,.net h2{font-size:clamp(36px,6vw,60px)}
+.net p{max-width:44ch;margin:14px auto 0;color:var(--pale)}
+.net .actions{justify-content:center}
+.net .net-status{min-height:1.6em;margin-top:22px;font-size:15px;font-weight:600}
+.net-schema{display:flex;align-items:center;margin-bottom:40px}
+.net-node{flex:none;padding:16px 14px;border:2px solid var(--cyan);background:var(--deep);font-weight:600;font-size:15px;line-height:1.3}
+.net-wire{flex:1;position:relative;height:24px}
+.net-wire i{position:absolute;top:11px;left:0;width:36%;height:2px;background:var(--cyan);transition:width .6s cubic-bezier(.6,0,.2,1),opacity .3s}
+.net-wire i+i{left:auto;right:0;opacity:.4}
+.net-wire i:first-child::after{content:"";position:absolute;top:-4px;left:0;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:#fff;animation:packet 1.4s ease-in-out infinite}
+.net-wire b{position:absolute;left:50%;top:50%;transition:opacity .3s,transform .3s}
+.net-wire b::before,.net-wire b::after{content:"";position:absolute;left:-10px;top:-1px;width:20px;height:3px;background:#fff;transform:rotate(45deg)}
+.net-wire b::after{transform:rotate(-45deg)}
+.net.back .net-wire i{width:50%;opacity:1}
+.net.back .net-wire b{opacity:0;transform:scale(.3)}
+@media (max-height:440px){
+  .net{padding-top:16px;padding-bottom:16px}
+  .net-schema{margin-bottom:16px}
+  .net-node{padding:8px 12px}
+  .net h1,.net h2{font-size:32px}
+  .net p{margin-top:8px;font-size:15px;line-height:1.45}
+  .net .actions{margin-top:16px}
+  .net .net-status{margin-top:8px}
+}
+@media screen{
+  html[data-theme="clair"] .net-lost{background:#fdfeff;color:var(--ink)}
+  html[data-theme="clair"] .net p{color:#2a4466}
+  html[data-theme="clair"] .net .net-status{color:var(--blue)}
+  html[data-theme="clair"] .net-node{border-color:var(--blue);background:#fff}
+  html[data-theme="clair"] .net-wire i{background:var(--blue)}
+  html[data-theme="clair"] .net-wire i::after,html[data-theme="clair"] .net-wire b::before,html[data-theme="clair"] .net-wire b::after{background:var(--ink)}
+  html[data-theme="sombre"] .net-lost{background:#06142a}
+  html[data-theme="sombre"] .net-node{background:#112a50}
+}
+
 /* thèmes au choix : « plan » (par défaut) ci-dessus, puis clair et sombre */
 @media screen{
   html[data-theme="clair"]{color-scheme:light}

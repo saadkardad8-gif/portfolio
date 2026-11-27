@@ -121,6 +121,11 @@
     "Télécharger la carte (PDF)": "Download the card (PDF)",
     "© 2026 Saad Kardad. Conçu et développé à Marrakech.": "© 2026 Saad Kardad. Designed and built in Marrakech.",
     "Domaines": "Areas",
+    "Connexion perdue": "Connection lost",
+    "Vérifiez votre Wi-Fi ou vos données mobiles. La reconnexion se fait toute seule dès que le réseau revient.": "Check your Wi-Fi or mobile data. It reconnects on its own as soon as the network is back.",
+    "Réessayer": "Try again",
+    "Continuer à lire": "Keep reading",
+    "Votre appareil": "Your device",
     "Résumé 30 s": "30 s summary",
     "Résumé en 30 secondes": "30-second summary",
     "Cliquez sur une technologie en bleu clair pour voir le projet où je l'ai utilisée.": "Click a light blue technology to see the project where I used it.",
@@ -586,6 +591,45 @@
   addEventListener("pointerdown", e => { if (!header.contains(e.target)) openMenu(false); });
   header.addEventListener("focusout", e => { if (e.relatedTarget && !header.contains(e.relatedTarget)) openMenu(false); });
   matchMedia("(min-width: 921px)").addEventListener("change", e => { if (e.matches) openMenu(false); });
+
+  /* ---------- page de reconnexion quand le réseau est coupé ---------- */
+  const lost = $(".net-lost"), netBox = $(".net", lost), netStatus = $(".net-status", lost);
+  const netText = {
+    wait: { fr: "En attente du réseau…", en: "Waiting for the network…" },
+    test: { fr: "Vérification…", en: "Checking…" },
+    no: { fr: "Toujours pas de connexion.", en: "Still no connection." },
+    back: { fr: "Connexion rétablie.", en: "Connection restored." }
+  };
+  let netState = "", netPoll = 0, netTimer = 0;
+  const netSay = state => { netState = state; netStatus.textContent = state ? netText[state][isEn() ? "en" : "fr"] : ""; };
+  onLang.push(() => netSay(netState));
+  // une vraie requête : « connecté au Wi-Fi » ne veut pas toujours dire « Internet marche »
+  const reachable = () => fetch("robots.txt?t=" + Date.now(), { cache: "no-store" }).then(() => true, () => false);
+  function restored() {
+    if (!lost.open || netState === "back") return;
+    netBox.classList.add("back");
+    netSay("back");
+    netTimer = setTimeout(() => lost.close(), 1600);
+  }
+  const check = async () => { if (await reachable()) restored(); };
+  function disconnected() {
+    clearTimeout(netTimer);
+    clearInterval(netPoll);
+    netBox.classList.remove("back");
+    netSay("wait");
+    if (!lost.open && lost.showModal) lost.showModal();
+    netPoll = setInterval(check, 5000);
+  }
+  $(".net-retry").addEventListener("click", async () => {
+    netSay("test");
+    if (await reachable()) restored(); else netSay("no");
+  });
+  $(".net-close").addEventListener("click", () => lost.close());
+  lost.addEventListener("close", () => { if (!lost.open) { clearInterval(netPoll); netSay(""); } });
+  addEventListener("offline", disconnected);
+  addEventListener("online", check);
+  if (!navigator.onLine) disconnected();
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 
   /* ---------- langue demandée par l'adresse ou mémorisée ---------- */
   let saved = new URLSearchParams(location.search).get("lang");
