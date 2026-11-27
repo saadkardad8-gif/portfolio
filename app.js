@@ -121,6 +121,8 @@
     "Télécharger la carte (PDF)": "Download the card (PDF)",
     "© 2026 Saad Kardad. Conçu et développé à Marrakech.": "© 2026 Saad Kardad. Designed and built in Marrakech.",
     "Domaines": "Areas",
+    "Ouvrir dans Google Maps": "Open in Google Maps",
+    "La carte Google s'affiche ici avec une connexion Internet.": "The Google map appears here when you are online.",
     "Connexion perdue": "Connection lost",
     "Vérifiez votre Wi-Fi ou vos données mobiles. La reconnexion se fait toute seule dès que le réseau revient.": "Check your Wi-Fi or mobile data. It reconnects on its own as soon as the network is back.",
     "Réessayer": "Try again",
@@ -591,6 +593,13 @@
   addEventListener("pointerdown", e => { if (!header.contains(e.target)) openMenu(false); });
   header.addEventListener("focusout", e => { if (e.relatedTarget && !header.contains(e.relatedTarget)) openMenu(false); });
   matchMedia("(min-width: 921px)").addEventListener("change", e => { if (e.matches) openMenu(false); });
+
+  /* ---------- carte : même langue que la page ---------- */
+  const map = $(".map iframe");
+  onLang.push(() => {
+    map.title = (isEn() ? "Map: " : "Carte : ") + "Les Portes de Marrakech I";
+    map.src = map.getAttribute("src").replace(/hl=\w+/, "hl=" + (isEn() ? "en" : "fr"));
+  });
 
   /* ---------- page de reconnexion quand le réseau est coupé ---------- */
   const lost = $(".net-lost"), netBox = $(".net", lost), netStatus = $(".net-status", lost);
