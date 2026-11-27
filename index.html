@@ -2,10 +2,14 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<script>document.documentElement.classList.add("js")</script>
+<script>(function(d){d.classList.add("js");try{var t=localStorage.getItem("theme");if(t==="clair"||t==="sombre")d.dataset.theme=t}catch(e){}})(document.documentElement)</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Saad Kardad, développeur web full stack à Marrakech</title>
 <meta name="description" content="Portfolio de Saad Kardad, développeur web full stack junior à Marrakech : React.js, Node.js, PHP, MySQL et MongoDB. CV à télécharger.">
+<meta name="author" content="Saad Kardad">
+<link rel="canonical" href="https://portfolio-mu-steel-zfnj86dv36.vercel.app/">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Saad Kardad">
 <meta property="og:title" content="Saad Kardad, développeur web full stack">
 <meta property="og:description" content="Développeur web full stack junior à Marrakech. Projets, parcours et CV.">
 <meta property="og:type" content="website">
@@ -17,8 +21,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0a3a78">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a3a78'/%3E%3Cpath d='M21 20L8 32l13 12M43 20l13 12-13 12' fill='none' stroke='%238fe3ff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M37 15L27 49' fill='none' stroke='%23ffffff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" as="image" href="photo-560.webp" imagesrcset="photo-360.webp 360w, photo-560.webp 560w" imagesizes="(max-width: 920px) 190px, 322px" fetchpriority="high">
 <link rel="preload" href="fonts/ibm-plex-sans-condensed-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfilePage","mainEntity":{"@type":"Person","name":"Saad Kardad","jobTitle":"Développeur web full stack junior","url":"https://portfolio-mu-steel-zfnj86dv36.vercel.app/","image":"https://portfolio-mu-steel-zfnj86dv36.vercel.app/photo.jpg","address":{"@type":"PostalAddress","addressLocality":"Marrakech","addressCountry":"MA"},"alumniOf":{"@type":"EducationalOrganization","name":"Institut Excel, Marrakech"},"knowsAbout":["React.js","Node.js","Express","JavaScript","PHP","Laravel","MySQL","MongoDB","C#"],"knowsLanguage":["ar","fr","en"],"sameAs":["https://github.com/saadkardad8-gif"]}}</script>
 </head>
 <body>
 <a class="skip" href="#contenu">Aller au contenu</a>
@@ -26,16 +34,21 @@
 <header>
   <div class="wrap bar">
     <a class="brand" href="#accueil">Saad Kardad</a>
-    <nav aria-label="Sections">
-      <a href="#profil">Profil</a>
-      <a href="#parcours">Parcours</a>
-      <a href="#projets">Projets</a>
-      <a href="#competences">Compétences</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <button class="btn btn-line btn-small head-recap open-recap" type="button">Résumé 30 s</button>
-    <button class="btn btn-line btn-small lang-btn" type="button" lang="en" aria-label="Switch to English">EN</button>
-    <a class="btn btn-solid btn-small" href="SaadkardadCv.pdf" download="CV_Saad_Kardad.pdf">Télécharger le CV</a>
+    <div class="menu" id="menu">
+      <nav aria-label="Sections">
+        <a href="#profil">Profil</a>
+        <a href="#parcours">Parcours</a>
+        <a href="#projets">Projets</a>
+        <a href="#competences">Compétences</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="btn btn-line btn-small head-recap open-recap" type="button">Résumé 30 s</button>
+      <button class="btn btn-line btn-small theme-btn" type="button"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg><span class="theme-name">Thème : plan</span></button>
+      <a class="btn btn-solid btn-small menu-cv" href="SaadkardadCv.pdf" download="CV_Saad_Kardad.pdf">Télécharger le CV</a>
+    </div>
+    <button class="btn btn-line btn-small lang-btn" type="button" lang="en" aria-label="EN, switch to English">EN</button>
+    <a class="btn btn-solid btn-small head-cv" href="SaadkardadCv.pdf" download="CV_Saad_Kardad.pdf">Télécharger le CV</a>
+    <button class="btn btn-line btn-small menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu"><i aria-hidden="true"></i></button>
   </div>
   <div class="ruler" aria-hidden="true"><i></i></div>
 </header>
@@ -59,7 +72,7 @@
       <div class="dim dim-x" aria-hidden="true"></div>
       <div class="dim dim-y" aria-hidden="true"></div>
       <div class="frame draw">
-        <div class="shot"><img src="photo.jpg" width="560" height="720" alt="Portrait de Saad Kardad"></div>
+        <div class="shot"><img src="photo-560.webp" srcset="photo-360.webp 360w, photo-560.webp 560w" sizes="(max-width: 920px) 190px, 322px" width="560" height="720" alt="Portrait de Saad Kardad" fetchpriority="high"></div>
         <i class="scan" aria-hidden="true"></i>
       </div>
     </figure>
@@ -317,8 +330,8 @@
     <div class="card-zone">
       <button class="card-btn" type="button" aria-pressed="false" aria-label="Retourner la carte de visite">
         <span class="card-inner">
-          <img class="face recto" src="carte-recto.jpg" width="1360" height="880" alt="Recto de la carte de visite : Saad Kardad, développeur web full stack junior, stagiaire chez Wafa Assurance">
-          <img class="face verso" src="carte-verso.png" width="1360" height="880" alt="Verso de la carte de visite : téléphone, e-mail, GitHub, Marrakech et QR code pour ajouter le contact">
+          <img class="face recto" src="carte-recto.webp" loading="lazy" width="1360" height="880" alt="Recto de la carte de visite : Saad Kardad, développeur web full stack junior, stagiaire chez Wafa Assurance">
+          <img class="face verso" src="carte-verso.webp" loading="lazy" width="1360" height="880" alt="Verso de la carte de visite : téléphone, e-mail, GitHub, Marrakech et QR code pour ajouter le contact">
         </span>
       </button>
       <p class="card-hint">Cliquez sur la carte pour la retourner</p>
@@ -331,7 +344,7 @@
 <dialog class="recap" aria-labelledby="recap-nom">
   <button class="recap-close" type="button" aria-label="Fermer le résumé">×</button>
   <div class="recap-head">
-    <img src="photo.jpg" width="560" height="720" alt="Portrait de Saad Kardad">
+    <img src="photo-360.webp" width="360" height="463" alt="Portrait de Saad Kardad" loading="lazy">
     <div>
       <h2 id="recap-nom">Saad Kardad</h2>
       <p>Future Engineer et développeur web full stack à Marrakech</p>

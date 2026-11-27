@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<script>(function(d){try{var t=localStorage.getItem("theme");if(t==="clair"||t==="sombre")d.dataset.theme=t}catch(e){}})(document.documentElement)</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page introuvable | Saad Kardad</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0a3a78">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a3a78'/%3E%3Cpath d='M21 20L8 32l13 12M43 20l13 12-13 12' fill='none' stroke='%238fe3ff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M37 15L27 49' fill='none' stroke='%23ffffff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body class="lost">
+<main class="sheet dark">
+  <div class="wrap">
+    <p class="lost-code" aria-hidden="true">404</p>
+    <h1 data-en="Page not found">Page introuvable</h1>
+    <p data-en="This page does not exist or has been moved.">Cette page n'existe pas ou a été déplacée.</p>
+    <div class="actions">
+      <a class="btn btn-solid" href="/" data-en="Back to the portfolio">Revenir au portfolio</a>
+      <a class="btn btn-line" href="/#projets" data-en="See my projects">Voir mes projets</a>
+      <a class="btn btn-line" href="/#contact" data-en="Contact me">Me contacter</a>
+    </div>
+  </div>
+</main>
+<script>
+(function(){
+  var lang = new URLSearchParams(location.search).get("lang");
+  try { lang = lang || localStorage.getItem("lang"); } catch (e) {}
+  if (lang !== "en") return;
+  document.documentElement.lang = "en";
+  document.title = "Page not found | Saad Kardad";
+  document.querySelectorAll("[data-en]").forEach(function (el) { el.textContent = el.getAttribute("data-en"); });
+})();
+</script>
+</body>
+</html>

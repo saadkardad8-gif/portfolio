@@ -159,7 +159,7 @@
     document.title = toEn ? en[frTitle] : frTitle;
     langBtn.textContent = toEn ? "FR" : "EN";
     langBtn.lang = toEn ? "fr" : "en";
-    langBtn.setAttribute("aria-label", toEn ? "Passer en français" : "Switch to English");
+    langBtn.setAttribute("aria-label", toEn ? "FR, passer en français" : "EN, switch to English");
     try { localStorage.setItem("lang", lang); } catch {}
     onLang.forEach(fn => fn());
   }
@@ -501,21 +501,21 @@
   };
   const result = document.createElement("div");
   result.className = "skill-result";
-  result.setAttribute("role", "status");
   let picked = null;
   function showSkill() {
     if (!picked) { result.remove(); return; }
     const lang = isEn() ? "en" : "fr";
     result.innerHTML = "";
-    const title = document.createElement("p");
+    const title = document.createElement("dt"), list = document.createElement("dd");
+    list.setAttribute("aria-live", "polite");
     title.textContent = isEn() ? `${picked.dataset.tech} is used in:` : `${picked.dataset.tech}, utilisé dans :`;
-    result.append(title);
+    result.append(title, list);
     usedIn[picked.dataset.tech].forEach(key => {
       const link = document.createElement("a");
       link.href = projects[key].href;
       link.className = "btn btn-solid btn-small";
       link.textContent = projects[key][lang];
-      result.append(link);
+      list.append(link);
     });
     picked.closest(".skills > div").after(result);
   }
@@ -536,6 +536,56 @@
     });
   });
   onLang.push(showSkill);
+
+  /* ---------- thème : plan (d'origine), clair ou sombre ---------- */
+  const themes = {
+    plan: { color: "#0a3a78", fr: "Thème : plan", en: "Theme: blueprint" },
+    clair: { color: "#ffffff", fr: "Thème : clair", en: "Theme: light" },
+    sombre: { color: "#040e1f", fr: "Thème : sombre", en: "Theme: dark" }
+  };
+  const themeBtn = $(".theme-btn");
+  const theme = () => root.dataset.theme || "plan";
+  function showTheme() {
+    const label = themes[theme()][isEn() ? "en" : "fr"];
+    $("span", themeBtn).textContent = themeBtn.title = label;
+    $('meta[name="theme-color"]').content = themes[theme()].color;
+  }
+  function setTheme(name) {
+    if (name === "plan") delete root.dataset.theme; else root.dataset.theme = name;
+    try { localStorage.setItem("theme", name); } catch {}
+    showTheme();
+  }
+  themeBtn.addEventListener("click", () => {
+    const order = Object.keys(themes);
+    const next = order[(order.indexOf(theme()) + 1) % order.length];
+    if (document.startViewTransition && !calm) document.startViewTransition(() => setTheme(next));
+    else setTheme(next);
+  });
+  onLang.push(showTheme);
+  showTheme();
+
+  /* ---------- menu sur téléphone et tablette ---------- */
+  const header = $("header"), menuBtn = $(".menu-btn");
+  const openMenu = open => {
+    header.classList.toggle("open", open);
+    menuBtn.setAttribute("aria-expanded", String(open));
+  };
+  menuBtn.addEventListener("click", e => {
+    const open = !header.classList.contains("open");
+    openMenu(open);
+    if (open && !e.detail) $("#menu a").focus();   // ouvert au clavier : on entre dans le menu
+  });
+  $("#menu").addEventListener("click", e => {
+    if (e.target.closest("a, .open-recap")) openMenu(false);
+  });
+  addEventListener("keydown", e => {
+    if (e.key !== "Escape" || !header.classList.contains("open")) return;
+    openMenu(false);
+    menuBtn.focus();
+  });
+  addEventListener("pointerdown", e => { if (!header.contains(e.target)) openMenu(false); });
+  header.addEventListener("focusout", e => { if (e.relatedTarget && !header.contains(e.relatedTarget)) openMenu(false); });
+  matchMedia("(min-width: 921px)").addEventListener("change", e => { if (e.matches) openMenu(false); });
 
   /* ---------- langue demandée par l'adresse ou mémorisée ---------- */
   let saved = new URLSearchParams(location.search).get("lang");
